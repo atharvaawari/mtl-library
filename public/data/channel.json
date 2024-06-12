@@ -1,0 +1,82 @@
+{
+    "game-videos": [
+      {
+        "name": "game_video_colset",
+        "languages": [
+          "Hindi",
+          "English",
+          "Bangla",
+          "Portuguese"
+        ]
+      }
+    ],
+    "yt-mindYourLogic": [
+      {
+        "name": "social_media_dataset1",
+        "languages": [
+          "Hindi",
+          "English",
+          "Bangla",
+          "Telugu",
+          "Tamil",
+          "Malayalam",
+          "Portuguese",
+          "Spanish",
+          "Kannada",
+          "Odia",
+          "Insta",
+          "FB"
+        ]
+      }
+    ],
+    "yt-Detective-mehul": [
+      {
+        "name": "social_media_dataset1",
+        "languages": [
+          "Hindi",
+          "English",
+          "Bangla",
+          "Telugu",
+          "Tamil",
+          "Malayalam",
+          "Portuguese",
+          "Spanish",
+          "Kannada",
+          "Odia",
+          "Insta",
+          "FB"
+        ]
+      }
+    ],
+    "yt-ghost-Hunters": [
+      {
+        "name": "social_media_dataset1",
+        "languages": [
+          "Hindi",
+          "English",
+          "Bangla",
+          "Telugu",
+          "Tamil",
+          "Malayalam",
+          "Portuguese",
+          "Spanish",
+          "Kannada",
+          "Odia",
+          "Insta",
+          "FB"
+        ]
+      }
+    ],
+    "insta-fb-content": [
+      {
+        "name": "social_media_dataset1",
+        "languages": [
+          "Mehul_Insta",
+          "Myl_Insta_Hindi",
+          "Myl_Insta_English",
+          "Myl_FB"
+        ]
+      }
+    ]
+  }
+  

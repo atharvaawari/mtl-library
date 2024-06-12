@@ -1,0 +1,132 @@
+/* FormComponent.css */
+body {
+  font-family: 'Nunito', sans-serif;
+  background-color: #f3f4f6;
+  margin: 0;
+  padding: 0;
+  text-align: center;
+}
+
+/* .form-container , .form-container {
+  max-width: 400px;
+  margin: 0 auto;
+} */
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+label {
+  display: inline-block;
+  margin-bottom: 5px;
+  font-weight: bold;
+  margin: 1.5rem 0;
+  margin-right: .5rem;
+  margin-bottom: 0;
+}
+
+input[type="text"],
+input[type="email"],
+textarea {
+  width: 90%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 16px;
+}
+
+textarea {
+  height: 120px; /* Adjust as needed */
+}
+
+button[type="submit"]:hover {
+  background-color: #0056b3;
+}
+
+table {
+  margin: auto;
+  min-width: 500px;
+  text-align: center;
+  border-collapse: collapse;
+  width: 100%;
+  box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.25) !important;
+}
+
+.MuiPaper-root,.table-container {
+  margin: auto;
+  max-width: 1200px
+}
+
+table th {
+  padding: .5rem .5rem !important;
+  background-color: #FFD966;
+  border-bottom: 1px solid #8080805e;
+  font-weight: 800;
+}
+
+table td {
+  padding: .5rem .5rem !important;
+  background-color: #fff;
+  border-bottom: 1px solid #8080805e;
+  font-weight: 800;
+}
+
+table thead tr:first-child{
+  min-width: 100px;
+}
+
+.form-container button{
+  width: 100px;
+  margin: 2rem auto;
+}
+
+.channel-dropdown{
+  padding-top: 1rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.channel-dropdown .MuiFormControl-root{
+  display: inline-block !important;
+}
+
+.channel-dropdown #category-label{
+  margin: 0;
+}
+
+.MuiSelect-select{
+  width: 300px !important;
+}
+
+
+.css-17g15ku-MuiButtonBase-root-MuiButton-root{
+background-color: rgba(0, 0, 0, 0.29);
+}
+
+.success{
+  background-color: #198754 !important;
+}
+
+.error{
+  background-color: #dc3545 !important;
+}
+
+.grey{
+  background-color: #6c757d !important;
+  color:white !important;
+}
+
+.red-batch{
+  color: white;
+  background-color: #dc3545;
+  font-weight: 700;
+  padding: 3px;
+  position: absolute;
+  top: -3px;
+  font-size: 9px;
+  right: -9px;
+  border-radius: 7px;
+  width: 25px;
+}

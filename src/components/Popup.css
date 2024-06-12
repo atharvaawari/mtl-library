@@ -1,0 +1,49 @@
+/* Popup.css */
+.popup-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.25) !important;
+    z-index: 9;
+}
+
+.popup-content {
+    background: white;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.25);
+    text-align: left;
+}
+
+.btn-box{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.btn-box button{
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    background-color: #007bff;
+    color: #fff;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin: 2rem 1rem;
+}
+
+.popup-content form{
+    height: 400px;
+    overflow-y: scroll;
+    width: 500px;
+    z-index: 999999;
+}
+
+
