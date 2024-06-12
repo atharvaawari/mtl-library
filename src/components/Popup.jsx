@@ -30,16 +30,17 @@ const Popup = ({ onClose, addData, selectedCategory }) => {
         odia_complete: false,
         odia_published: false,
         insta_complete: false,
-        insta_published : false,
+        insta_published: false,
         fb_complete: false,
         fb_published: false,
+        file_link: false
     });
 
     const handleChange = (e) => {
         const { name, type, checked } = e.target;
         const newValue = type === 'checkbox' ? checked : e.target.value;
 
-        setFormData({ ...formData, [name]: newValue,channel: selectedCategory  });
+        setFormData({ ...formData, [name]: newValue, channel: selectedCategory });
     };
 
 
@@ -82,9 +83,10 @@ const Popup = ({ onClose, addData, selectedCategory }) => {
                     odia_complete: false,
                     odia_published: false,
                     insta_complete: false,
-                    insta_published : false,
+                    insta_published: false,
                     fb_complete: false,
                     fb_published: false,
+                    // file_link: " ",
                 });
 
                 toast.success('Data inserted successfully!', {
@@ -108,7 +110,7 @@ const Popup = ({ onClose, addData, selectedCategory }) => {
                         X
                     </IconButton>
                 </div>
-            
+
                 <div>
                     <form onSubmit={handleSubmit}>
                         <label htmlFor="title">Title</label>
@@ -122,7 +124,7 @@ const Popup = ({ onClose, addData, selectedCategory }) => {
                         />
                         <br />
 
-                        {['Hindi', 'English', 'Bangla', 'Telugu', 'Tamil', 'Malayalam', 'Portuguese', 'Spanish','Kannada','Odia','insta','fb'].map((language, index) => (
+                        {['Hindi', 'English', 'Bangla', 'Telugu', 'Tamil', 'Malayalam', 'Portuguese', 'Spanish', 'Kannada', 'Odia', 'insta', 'fb'].map((language, index) => (
                             <div key={index}>
                                 <label htmlFor={`${language.toLowerCase()}_complete`}>{index + 1}. {language}</label>
                                 <br />
@@ -146,6 +148,17 @@ const Popup = ({ onClose, addData, selectedCategory }) => {
                                 <br />
                             </div>
                         ))}
+                        {/* <div>
+                            <label htmlFor="file_link">File Link</label>
+                            <input
+                                type="text"
+                                id="file_link"
+                                name="file_Link"
+                                value={formData.link}
+                                onChange={handleChange}
+                                required
+                            />
+                        </div> */}
 
                         <div className="btn-box">
                             <button type="submit">Submit</button>

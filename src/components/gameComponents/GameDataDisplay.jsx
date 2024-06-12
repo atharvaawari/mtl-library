@@ -114,11 +114,11 @@ const GameDataDisplay = React.memo(({ colsSet, selectedCategory }) => {
               <TableRow>
                 <TableCell>ID</TableCell>
                 <TableCell style={{ minWidth: "100px" }}>Title</TableCell>
+                <TableCell>Action</TableCell>
                 <TableCell>Hindi</TableCell>
                 <TableCell>English</TableCell>
                 <TableCell>Bangla</TableCell>
                 <TableCell>Portuguese</TableCell>
-                <TableCell>Action</TableCell>
                 <TableCell></TableCell>
               </TableRow>
             </TableHead>
@@ -132,6 +132,15 @@ const GameDataDisplay = React.memo(({ colsSet, selectedCategory }) => {
                     {item.title}
                   </TableCell>
 
+                  <TableCell>
+                    <Button
+                      variant="contained"
+                      className="editbtn"
+                      onClick={() => openUpdate(item)}>
+                      ✏️
+                    </Button>
+                  </TableCell>
+                  
                   <TableCell>
                     <Button
                       variant="contained"
@@ -212,14 +221,6 @@ const GameDataDisplay = React.memo(({ colsSet, selectedCategory }) => {
                     </Button>
                   </TableCell>
 
-                  <TableCell>
-                    <Button
-                      variant="contained"
-                      className="editbtn"
-                      onClick={() => openUpdate(item)}>
-                      ✏️
-                    </Button>
-                  </TableCell>
                 </TableRow>
               ))}
             </TableBody>

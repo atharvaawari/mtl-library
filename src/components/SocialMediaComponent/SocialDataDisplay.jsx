@@ -121,11 +121,12 @@ const SocialDataDisplay = React.memo(({ colsSet, selectedCategory }) => {
                 <TableRow>
                   <TableCell>ID</TableCell>
                   <TableCell>Title</TableCell>
+                  <TableCell>Action</TableCell>
                   <TableCell>Mehul Insta</TableCell>
                   <TableCell>MYL Insta Hindi</TableCell>
                   <TableCell>MYL Insta English</TableCell>
                   <TableCell>MYL FB</TableCell>
-                  <TableCell></TableCell>
+                  
                   <TableCell></TableCell>
                 </TableRow>
               </TableHead>
@@ -134,8 +135,17 @@ const SocialDataDisplay = React.memo(({ colsSet, selectedCategory }) => {
                   <TableRow key={idx}>
                     <TableCell>{idx + 1}</TableCell>
                     <TableCell>{item.title}</TableCell>
+
                     <TableCell className='btn-container'>
-                      
+                      <Button
+                        variant="contained"
+                        className="editbtn"
+                        onClick={() => openUpdate(item)}>
+                        ✏️
+                      </Button>
+                    </TableCell>
+
+                    <TableCell className='btn-container'>
                       <Button
                         variant="contained"
                         className={
@@ -220,15 +230,6 @@ const SocialDataDisplay = React.memo(({ colsSet, selectedCategory }) => {
                           : JSON.parse(item.myl_fb_complete) === true
                             ? "C"
                             : "-"}
-                      </Button>
-                    </TableCell>
-
-                    <TableCell className='btn-container'>
-                      <Button
-                        variant="contained"
-                        className="editbtn"
-                        onClick={() => openUpdate(item)}>
-                        ✏️
                       </Button>
                     </TableCell>
 

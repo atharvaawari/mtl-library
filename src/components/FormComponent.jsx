@@ -39,14 +39,6 @@ const FormComponent = () => {
   };
 
 
-  // const togglePopup = () => {
-  //   setIsPopupOpen(!isPopupOpen);
-  // };
-
-  // const addData = (newData) => {
-  //   setData([...data, newData]);
-  // };
-
   return (
     <>
       <Navbar />
@@ -82,16 +74,6 @@ const FormComponent = () => {
         <GameDataDisplay colsSet={colsSet} selectedCategory={selectedCategory} />
       )}
 
-
-      {/* {selectedCategory === "game-videos" ? (
-        <GameDataDisplay colsSet={colsSet} selectedCategory={selectedCategory} />
-      ) : selectedCategory === "" ? (
-        <p style={{ textAlign: "center" }}>
-          <strong>Please select a category.</strong>
-        </p>
-      ) : (
-        <DataDisplay selectedCategory={selectedCategory} />
-      )} */}
 
     </>
   );

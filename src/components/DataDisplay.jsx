@@ -10,6 +10,7 @@ import {
   Button,
   Collapse,
   Box,
+  TextField,
 } from "@mui/material";
 import Update from "./Update";
 import Popup from "./Popup";
@@ -24,14 +25,8 @@ const DataDisplay = React.memo(({ colsSet, selectedCategory }) => {
   const [selectedItem, setSelectedItem] = useState(null);
   const [tableData, setTableData] = useState([]);
   const [nestedData, setNestedData] = useState(null);
-  // const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [addPopUp, setAddPopUp] = useState(false);
-  // const [currentParentId, setCurrentParentId] = useState(null); // New state for current parent 
-
-  // const togglePopup = (parentId) => {
-  //   setCurrentParentId(parentId); // Set the current parent ID
-  //   setIsPopupOpen(!isPopupOpen);
-  // };
+   
 
   const toggleAddPopUp  = () => {
     setAddPopUp(!addPopUp)
@@ -159,7 +154,7 @@ const DataDisplay = React.memo(({ colsSet, selectedCategory }) => {
         )}
       </div>
       {Object.keys(groupedData).map((channel, index) => (
-        <div key={index} style={{ marginBottom: "4rem" }}>
+        <div key={index} style={{ marginBottom: "2rem" }}>
           <TableContainer component={Paper}>
             <Table>
               <TableHead>
@@ -180,6 +175,7 @@ const DataDisplay = React.memo(({ colsSet, selectedCategory }) => {
                   <TableCell>Odia</TableCell>
                   <TableCell>Insta</TableCell>
                   <TableCell>FB</TableCell>
+                  {/* <TableCell>Link</TableCell> */}
                   
                 </TableRow>
               </TableHead>
@@ -464,6 +460,9 @@ const DataDisplay = React.memo(({ colsSet, selectedCategory }) => {
                               : "-"}
                         </Button>
                       </TableCell>
+                      <TableCell>
+                      {/* <a style={{border: "1px solid black", padding: "12px"}} href="">Link</a> */}
+                      </TableCell>
                     </TableRow>
                     <TableRow>
                       <TableCell
@@ -478,14 +477,6 @@ const DataDisplay = React.memo(({ colsSet, selectedCategory }) => {
                           </Box>
                         </Collapse>
                       </TableCell>
-                      {/* {isPopupOpen && currentParentId === item.id && (
-                        <AddChildPopup
-                          onClose={togglePopup}
-                          addChildData={addChildData}
-                          parent_id={currentParentId}
-                          incChildCount={incChildCount}
-                        />
-                      )} */}
                     </TableRow>
                   </React.Fragment>
                 ))}

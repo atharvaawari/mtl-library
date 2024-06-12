@@ -40,15 +40,12 @@ const AddChildPopup = ({ onClose, addChildData, parent_id, incChildCount }) => {
         const { name, type, checked } = e.target;
         const newValue = type === 'checkbox' ? checked : e.target.value;
 
-        setFormData({ ...formData, [name]: newValue,parent_id: parent_id ,id: 57  });
+        setFormData({ ...formData, [name]: newValue,parent_id: parent_id });
     };
 
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-
-        console.log("formData", formData)
-
         try {
             const response = await fetch('http://localhost:3001/submit-child', {
                 method: 'POST',

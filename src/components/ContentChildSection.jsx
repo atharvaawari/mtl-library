@@ -26,8 +26,12 @@ const ContentHub = ({ nestedData, currentItemId }) => {
   };
 
   const addChildData = (newData) => {
-    setTableData([...tableData, newData]);
+    const newEntry = { id: tableData.length + 1, ...newData };
+    setTableData([...tableData, newEntry]);
+      console.log("setTableData", tableData)
+      console.log("newEntry", newEntry)
   };
+
 
   const incChildCount = async (id) => {
     const updatedArray = tableData.map((item) =>

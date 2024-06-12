@@ -54,7 +54,8 @@ table {
 
 .MuiPaper-root,.table-container {
   margin: auto;
-  max-width: 1200px
+  max-width: 95%;
+  overflow: scroll;
 }
 
 table th {
