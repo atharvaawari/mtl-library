@@ -47,6 +47,7 @@ const AddChildPopup = ({ onClose, addChildData, parent_id, incChildCount }) => {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
+        console.log("formData", formData)
 
         try {
             const response = await fetch('http://localhost:3001/submit-child', {

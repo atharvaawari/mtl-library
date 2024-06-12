@@ -18,18 +18,20 @@ import ContentHub from "./ContentChildSection";
 import { toast, Toaster } from "react-hot-toast";
 
 const DataDisplay = React.memo(({ colsSet, selectedCategory }) => {
+
+  const [currentItemId, setCurrentItemId] = useState(null)
   const [showUpdate, setShowUpdate] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
   const [tableData, setTableData] = useState([]);
   const [nestedData, setNestedData] = useState(null);
-  const [isPopupOpen, setIsPopupOpen] = useState(false);
+  // const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [addPopUp, setAddPopUp] = useState(false);
-  const [currentParentId, setCurrentParentId] = useState(null); // New state for current parent 
+  // const [currentParentId, setCurrentParentId] = useState(null); // New state for current parent 
 
-  const togglePopup = (parentId) => {
-    setCurrentParentId(parentId); // Set the current parent ID
-    setIsPopupOpen(!isPopupOpen);
-  };
+  // const togglePopup = (parentId) => {
+  //   setCurrentParentId(parentId); // Set the current parent ID
+  //   setIsPopupOpen(!isPopupOpen);
+  // };
 
   const toggleAddPopUp  = () => {
     setAddPopUp(!addPopUp)
@@ -71,7 +73,8 @@ const DataDisplay = React.memo(({ colsSet, selectedCategory }) => {
     if (expandedRow === idx) {
       setExpandedRow(null);
     } else {
-      if (!nestedData[itemId]) {
+      setCurrentItemId(itemId)
+      // if (!nestedData[itemId]) {
         try {
           const response = await fetch(
             `http://localhost:3001/get-content-child-data?id=${itemId}`
@@ -86,7 +89,7 @@ const DataDisplay = React.memo(({ colsSet, selectedCategory }) => {
         } catch (error) {
           console.error("Error fetching nested data:", error);
         }
-      }
+      // }
 
       setExpandedRow(idx);
     }
@@ -118,17 +121,7 @@ const DataDisplay = React.memo(({ colsSet, selectedCategory }) => {
     closeUpdate();
   };
 
-  const addChildData = (newData) => {
-    setNestedData([...nestedData, newData]);
-  };
 
-  const incChildCount = async (id) => {
-    const updatedArray = tableData.map((item) =>
-      item.id === id ? { ...item, child_count: item.child_count + 1 } : item
-    );
-
-    setTableData(updatedArray);
-  };
 
   const groupedData = tableData.reduce((acc, curr) => {
     
@@ -173,6 +166,8 @@ const DataDisplay = React.memo(({ colsSet, selectedCategory }) => {
                 <TableRow>
                   <TableCell>ID</TableCell>
                   <TableCell style={{ minWidth: '100px' }}>Title</TableCell>
+                <TableCell>Action</TableCell>
+                <TableCell></TableCell>
                   <TableCell>Hindi</TableCell>
                   <TableCell>English</TableCell>
                   <TableCell>Bangla</TableCell>
@@ -185,17 +180,39 @@ const DataDisplay = React.memo(({ colsSet, selectedCategory }) => {
                   <TableCell>Odia</TableCell>
                   <TableCell>Insta</TableCell>
                   <TableCell>FB</TableCell>
-                  <TableCell>Action</TableCell>
-                  <TableCell></TableCell>
-                  <TableCell></TableCell>
+                  
                 </TableRow>
               </TableHead>
               <TableBody>
                 {groupedData[channel].reverse().map((item, idx) => (
                   <React.Fragment key={idx}>
                     <TableRow>
-                      <TableCell>{idx + 1}</TableCell>
-                      <TableCell>{item.title}</TableCell>
+
+                    <TableCell>{idx + 1}</TableCell>
+                    <TableCell>{item.title}</TableCell>
+
+                      <TableCell>
+                        <Button
+                          variant="contained"
+                          className="editbtn"
+                          onClick={() => openUpdate(item)}>
+                          ✏️
+                        </Button>
+                      </TableCell>
+                      <TableCell>
+                        <Button
+                          variant="contained"
+                          onClick={() => handleExpandClick(idx, item.id)}>
+                          {expandedRow === idx ? "Collapse" : "Expand"}
+                          {}
+                          {
+                            item.child_count > 0
+                              ? <span className="red-batch">{item.child_count}</span>
+                              : ''
+                          }
+
+                        </Button>
+                      </TableCell>
 
                       <TableCell>
                         <Button
@@ -447,37 +464,6 @@ const DataDisplay = React.memo(({ colsSet, selectedCategory }) => {
                               : "-"}
                         </Button>
                       </TableCell>
-
-                      <TableCell>
-                        <Button
-                          variant="contained"
-                          className="editbtn"
-                          onClick={() => openUpdate(item)}>
-                          ✏️
-                        </Button>
-                      </TableCell>
-
-                      <TableCell>
-                        <Button
-                          variant="contained"
-                          onClick={() => handleExpandClick(idx, item.id)}>
-                          {expandedRow === idx ? "Collapse" : "Expand"}
-                          {
-                            item.child_count > 0
-                              ? <span className="red-batch">{item.child_count}</span>
-                              : ''
-                          }
-
-                        </Button>
-                      </TableCell>
-
-                      <TableCell>
-                        <Button
-                          variant="contained"
-                          onClick={() => togglePopup(item.id)}>
-                          add
-                        </Button>
-                      </TableCell>
                     </TableRow>
                     <TableRow>
                       <TableCell
@@ -488,18 +474,18 @@ const DataDisplay = React.memo(({ colsSet, selectedCategory }) => {
                           timeout="auto"
                           unmountOnExit>
                           <Box margin={1}>
-                            <ContentHub nestedData={nestedData} />
+                            <ContentHub nestedData={nestedData} currentItemId={currentItemId} />
                           </Box>
                         </Collapse>
                       </TableCell>
-                      {isPopupOpen && currentParentId === item.id && (
+                      {/* {isPopupOpen && currentParentId === item.id && (
                         <AddChildPopup
                           onClose={togglePopup}
                           addChildData={addChildData}
                           parent_id={currentParentId}
                           incChildCount={incChildCount}
                         />
-                      )}
+                      )} */}
                     </TableRow>
                   </React.Fragment>
                 ))}
