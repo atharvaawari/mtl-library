@@ -86,7 +86,7 @@ const GameDataDisplay = React.memo(({ colsSet, selectedCategory }) => {
   };
 
 
-  
+  const reversedTableData = [...tableData].reverse();
 
   return (
     <>
@@ -124,7 +124,7 @@ const GameDataDisplay = React.memo(({ colsSet, selectedCategory }) => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {tableData.reverse().map((item, idx) => ( 
+              {reversedTableData.map((item, idx) => ( 
                 <TableRow key={idx} className="MuiTableRow-root css-1q1u3t4-MuiTableRow-root">
                   <TableCell className="MuiTableCell-root MuiTableCell-body MuiTableCell-sizeMedium css-1ex1afd-MuiTableCell-root">
                     {idx + 1}

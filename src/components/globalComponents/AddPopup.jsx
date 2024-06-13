@@ -72,20 +72,6 @@ const AddPopup = ({ onClose, addData, selectedCategory, colsSet }) => {
             console.error('Error submitting form:', error);
         }
     
-        // addData(formData);
-        // setFormData({
-        //     title: '',
-        //     channel: '',
-        //     hindi_complete: false,
-        //     hindi_published: false,
-        //     english_complete: false,
-        //     english_published: false,
-        //     bangla_complete: false,
-        //     bangla_published: false,
-        //     portuguese_complete: false,
-        //     portuguese_published: false
-        // });
-    
         onClose();
     };
     

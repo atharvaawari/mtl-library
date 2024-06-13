@@ -1,11 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import "../FormComponent.css";
 import DataDisplay from "./DataDisplay";
 import GameDataDisplay from "./gameComponents/GameDataDisplay";
 import SocialDataDisplay from "./SocialMediaComponent/SocialDataDisplay";
 import Navbar from "./Navbar";
 import {
-  Button,
   MenuItem,
   Select,
   FormControl,
@@ -15,7 +14,6 @@ import {
 const FormComponent = () => {
   const [data, setData] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState("");
-  const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [colsSet, setColsSet] = useState([]);
 
   const changePopupData = (category) => {

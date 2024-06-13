@@ -93,6 +93,7 @@ const SocialDataDisplay = React.memo(({ colsSet, selectedCategory }) => {
     closeUpdate();
   };
 
+  const reversedTableData = [...tableData].reverse();
   
   return (
     <>
@@ -131,7 +132,7 @@ const SocialDataDisplay = React.memo(({ colsSet, selectedCategory }) => {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {tableData.reverse().map((item, idx) => (
+                {reversedTableData.map((item, idx) => (
                   <TableRow key={idx}>
                     <TableCell>{idx + 1}</TableCell>
                     <TableCell>{item.title}</TableCell>
@@ -241,14 +242,6 @@ const SocialDataDisplay = React.memo(({ colsSet, selectedCategory }) => {
             </Table>
           </TableContainer>
         </div>
-    s
-      {/* {showUpdate && selectedItem && (
-        <Update
-          item={selectedItem}
-          onClose={closeUpdate}
-          onUpdate={handleUpdate}
-        />
-      )} */}
       
       {showUpdatePopup && selectedItem && (
         <UpdateChild colsSet={colsSet} item={selectedItem} onClose={closeUpdate} onUpdate={handleUpdate} selectedCategory={selectedCategory} />
