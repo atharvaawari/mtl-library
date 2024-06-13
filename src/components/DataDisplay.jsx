@@ -20,17 +20,17 @@ import { toast, Toaster } from "react-hot-toast";
 
 const DataDisplay = React.memo(({ colsSet, selectedCategory }) => {
 
-  const [currentItemId, setCurrentItemId] = useState(null)
+  const [currentItemId, setCurrentItemId] = useState(0)
   const [showUpdate, setShowUpdate] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
   const [tableData, setTableData] = useState([]);
   const [nestedData, setNestedData] = useState(null);
   const [addPopUp, setAddPopUp] = useState(false);
-   
 
-  const toggleAddPopUp  = () => {
+
+  const toggleAddPopUp = () => {
     setAddPopUp(!addPopUp)
-  } 
+  }
 
   const fetchTableData = async (tablename) => {
     try {
@@ -38,7 +38,7 @@ const DataDisplay = React.memo(({ colsSet, selectedCategory }) => {
 
       const response = await fetch(url);
       const data = await response.json();
-      
+
       setTableData(data);
     } catch (error) {
       console.error('Error fetching data:', error);
@@ -48,9 +48,9 @@ const DataDisplay = React.memo(({ colsSet, selectedCategory }) => {
   useEffect(() => {
     fetchTableData('content_house');
 
-  }, [selectedCategory]);
+  }, [selectedCategory, currentItemId]);
 
- 
+
   const openUpdate = (item) => {
     setSelectedItem(item);
     setShowUpdate(true);
@@ -68,22 +68,22 @@ const DataDisplay = React.memo(({ colsSet, selectedCategory }) => {
     if (expandedRow === idx) {
       setExpandedRow(null);
     } else {
-      setCurrentItemId(itemId)
-      // if (!nestedData[itemId]) {
-        try {
-          const response = await fetch(
-            `http://localhost:3001/get-content-child-data?id=${itemId}`
-          );
-          if (response.ok) {
-            data = await response.json();
 
-            setNestedData(data);
-          } else {
-            console.error("Failed to fetch nested data");
-          }
-        } catch (error) {
-          console.error("Error fetching nested data:", error);
+      // if (!nestedData[itemId]) {
+      try {
+        const response = await fetch(
+          `http://localhost:3001/get-content-child-data?id=${itemId}`
+        );
+        if (response.ok) {
+          data = await response.json();
+
+          setNestedData(data);
+        } else {
+          console.error("Failed to fetch nested data");
         }
+      } catch (error) {
+        console.error("Error fetching nested data:", error);
+      }
       // }
 
       setExpandedRow(idx);
@@ -119,7 +119,7 @@ const DataDisplay = React.memo(({ colsSet, selectedCategory }) => {
 
 
   const groupedData = tableData.reduce((acc, curr) => {
-    
+
     const channel = curr.channel;
     if (!acc[channel]) {
       acc[channel] = [];
@@ -130,12 +130,22 @@ const DataDisplay = React.memo(({ colsSet, selectedCategory }) => {
     return acc;
   }, {});
 
-const addData = (newData) => {
-    // const newEntry = { id: tableData[tableData.length - 1].id + 1, ...newData };
-    setTableData([...tableData, { id: tableData[tableData.length - 1].id + 1, ...newData }]);
-    console.log(tableData[tableData.length - 1].id + 1)
-    console.log([...tableData, { id: tableData[tableData.length - 1].id + 1, ...newData }])
-  };
+  // const addData = (newData) => {
+  //     const newEntry = { id: tableData[tableData.length - 1].id + 1, ...newData };
+  //     setTableData([...tableData, { id: tableData[tableData.length - 1].id + 1, ...newData }]);
+  //     console.log(tableData[tableData.length - 1].id + 1)
+  //     console.log([...tableData, { id: tableData[tableData.length - 1].id + 1, ...newData }])
+  //     setCurrentItemId([...tableData, { id: tableData[tableData.length - 1].id + 1, ...newData }])  
+  //     console.log( "currentItemId"  ,currentItemId)
+  //   };
+
+  // const addData = async (newData) => {
+  //   const newEntry = { id: tableData[tableData.length - 1].id + 1, ...newData };
+  //   setTableData((prevTableData) => [...prevTableData, newEntry]);
+  //   setCurrentItemId(newEntry.id);
+  //   console.log("newEntry.id", newEntry.id)
+  //   console.log("currentItemId", currentItemId)
+  // };
 
   return (
     <>
@@ -164,8 +174,8 @@ const addData = (newData) => {
                 <TableRow>
                   <TableCell>ID</TableCell>
                   <TableCell style={{ minWidth: '100px' }}>Title</TableCell>
-                <TableCell>Action</TableCell>
-                <TableCell></TableCell>
+                  <TableCell>Action</TableCell>
+                  <TableCell></TableCell>
                   <TableCell>Hindi</TableCell>
                   <TableCell>English</TableCell>
                   <TableCell>Bangla</TableCell>
@@ -179,7 +189,7 @@ const addData = (newData) => {
                   <TableCell>Insta</TableCell>
                   <TableCell>FB</TableCell>
                   <TableCell>File Link</TableCell>
-                  
+
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -187,8 +197,8 @@ const addData = (newData) => {
                   <React.Fragment key={idx}>
                     <TableRow>
 
-                    <TableCell>{idx + 1}</TableCell>
-                    <TableCell>{item.title}</TableCell>
+                      <TableCell>{idx + 1}</TableCell>
+                      <TableCell>{item.title}</TableCell>
 
                       <TableCell>
                         <Button
@@ -203,7 +213,7 @@ const addData = (newData) => {
                           variant="contained"
                           onClick={() => handleExpandClick(idx, item.id)}>
                           {expandedRow === idx ? "Collapse" : "Expand"}
-                          {}
+                          { }
                           {
                             item.child_count > 0
                               ? <span className="red-batch">{item.child_count}</span>
@@ -464,7 +474,7 @@ const addData = (newData) => {
                         </Button>
                       </TableCell>
                       <TableCell>
-                      <a style={{border: "1px solid black", padding: "8px 10px"}} href={item.file_link}>Link</a>
+                        <a style={{ border: "1px solid black", padding: "8px 10px" }} href={item.file_link}>Link</a>
                       </TableCell>
                     </TableRow>
                     <TableRow>
@@ -486,10 +496,10 @@ const addData = (newData) => {
               </TableBody>
             </Table>
           </TableContainer>
-          <Toaster position="top-right"/>
+          <Toaster position="top-right" />
         </div>
       ))}
-      
+
       {showUpdate && selectedItem && (
         <Update
           item={selectedItem}
@@ -498,7 +508,7 @@ const addData = (newData) => {
         />
       )}
     </>
- 
+
   );
 });
 
