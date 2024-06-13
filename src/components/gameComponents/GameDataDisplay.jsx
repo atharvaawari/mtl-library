@@ -119,6 +119,7 @@ const GameDataDisplay = React.memo(({ colsSet, selectedCategory }) => {
                 <TableCell>English</TableCell>
                 <TableCell>Bangla</TableCell>
                 <TableCell>Portuguese</TableCell>
+                <TableCell>Link</TableCell>
                 <TableCell></TableCell>
               </TableRow>
             </TableHead>
@@ -220,7 +221,9 @@ const GameDataDisplay = React.memo(({ colsSet, selectedCategory }) => {
                         : "-"}
                     </Button>
                   </TableCell>
-
+                  <TableCell>
+                      <a style={{border: "1px solid black", padding: "8px 10px"}} href={item.file_link}>File Link</a>
+                      </TableCell>
                 </TableRow>
               ))}
             </TableBody>

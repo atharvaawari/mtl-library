@@ -33,7 +33,7 @@ const Popup = ({ onClose, addData, selectedCategory }) => {
         insta_published: false,
         fb_complete: false,
         fb_published: false,
-        file_link: false
+        file_link: ''
     });
 
     const handleChange = (e) => {
@@ -54,8 +54,9 @@ const Popup = ({ onClose, addData, selectedCategory }) => {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify(formData)
+                
             });
-
+            console.log(formData)
             if (response.ok) {
                 console.log('Form submitted successfully!');
                 addData(formData);
@@ -86,7 +87,7 @@ const Popup = ({ onClose, addData, selectedCategory }) => {
                     insta_published: false,
                     fb_complete: false,
                     fb_published: false,
-                    // file_link: " ",
+                    file_link: ' '
                 });
 
                 toast.success('Data inserted successfully!', {
@@ -148,17 +149,16 @@ const Popup = ({ onClose, addData, selectedCategory }) => {
                                 <br />
                             </div>
                         ))}
-                        {/* <div>
+                        <div>
                             <label htmlFor="file_link">File Link</label>
                             <input
                                 type="text"
                                 id="file_link"
-                                name="file_Link"
-                                value={formData.link}
+                                name="file_link"
                                 onChange={handleChange}
                                 required
                             />
-                        </div> */}
+                        </div>
 
                         <div className="btn-box">
                             <button type="submit">Submit</button>

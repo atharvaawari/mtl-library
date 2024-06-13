@@ -137,6 +137,16 @@ const AddPopup = ({ onClose, addData, selectedCategory, colsSet }) => {
                                     <br />
                                 </div>
                             ))}
+                            <div>
+                            <label htmlFor="file_link">File Link</label>
+                            <input
+                                type="text"
+                                id="file_link"
+                                name="file_link"
+                                onChange={handleChange}
+                                required
+                            />
+                        </div>
 
                             <div className="btn-box">
                                 <button type="submit">Submit</button>

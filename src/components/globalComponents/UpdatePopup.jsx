@@ -4,17 +4,6 @@ import IconButton from "@mui/material/IconButton";
 
 const UpdatePopup = ({ item, onClose, onUpdate, colsSet, selectedCategory }) => {
 
-  // const initialFormData = {
-  //   title: '',
-  //   channel: selectedCategory,
-  //   ...colsSet.reduce((acc, language) => {
-  //     acc[`${language.toLowerCase().replaceAll(' ', '_')}_complete`] = false;
-  //     acc[`${language.toLowerCase().replaceAll(' ', '_')}_published`] = false;
-  //     return acc;
-  //   }, {})
-  // };
-
-  // const [formData, setFormData] = useState(initialFormData);
 
   // State to hold the updated item
   const [updatedItem, setUpdatedItem] = useState(item);
@@ -27,14 +16,15 @@ const UpdatePopup = ({ item, onClose, onUpdate, colsSet, selectedCategory }) => 
       ...prevItem,
       [name]: type === "checkbox" ? String(checked) : e.target.value,
     }));
+
+    
   };
 
   const handleUpdate = () => {
     onUpdate(updatedItem); // Send updated item to parent component
     onClose(); // Close the popup
     setUpdatedItem((prevItem) => [...prevItem, updatedItem]);
-    console.log("name", updatedItem);
-    };
+  };
 
   return (
     <>
@@ -63,11 +53,10 @@ const UpdatePopup = ({ item, onClose, onUpdate, colsSet, selectedCategory }) => 
                   id={`${language.toLowerCase()}_complete`}
                   name={`${language.toLowerCase()}_complete`}
                   onChange={handleChange}
-                  checked={JSON.parse(updatedItem[`${language.toLowerCase()}_complete`])===true}
-     
+                  checked={JSON.parse(updatedItem[`${language.toLowerCase()}_complete`]) === true}
+
                 />
-                             {console.log(`${language.toLowerCase()}_complete`)}
-                             {console.log(updatedItem[`${language.toLowerCase()}_complete`])}
+                
                 <label htmlFor={`${language.toLowerCase()}_complete`}>Complete</label>
 
                 <input
@@ -81,6 +70,17 @@ const UpdatePopup = ({ item, onClose, onUpdate, colsSet, selectedCategory }) => 
                 <br />
               </div>
             ))}
+            <div>
+              <label htmlFor="file_link">File Link</label>
+              <input
+                type="text"
+                id="file_link"
+                name="file_link"
+                onChange={handleChange}
+                value={updatedItem.file_link}
+                required
+              />
+            </div>
           </div>
           <div className="btn-box">
             <button onClick={handleUpdate}>Update</button>

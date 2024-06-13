@@ -126,7 +126,7 @@ const SocialDataDisplay = React.memo(({ colsSet, selectedCategory }) => {
                   <TableCell>MYL Insta Hindi</TableCell>
                   <TableCell>MYL Insta English</TableCell>
                   <TableCell>MYL FB</TableCell>
-                  
+                  <TableCell>File Link</TableCell>
                   <TableCell></TableCell>
                 </TableRow>
               </TableHead>
@@ -232,7 +232,9 @@ const SocialDataDisplay = React.memo(({ colsSet, selectedCategory }) => {
                             : "-"}
                       </Button>
                     </TableCell>
-
+                    <TableCell>
+                      <a style={{border: "1px solid black", padding: "8px 10px"}} href={item.file_link}>Link</a>
+                      </TableCell>
                   </TableRow>
                 ))}
               </TableBody>

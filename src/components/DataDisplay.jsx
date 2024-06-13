@@ -175,7 +175,7 @@ const DataDisplay = React.memo(({ colsSet, selectedCategory }) => {
                   <TableCell>Odia</TableCell>
                   <TableCell>Insta</TableCell>
                   <TableCell>FB</TableCell>
-                  {/* <TableCell>Link</TableCell> */}
+                  <TableCell>File Link</TableCell>
                   
                 </TableRow>
               </TableHead>
@@ -461,7 +461,7 @@ const DataDisplay = React.memo(({ colsSet, selectedCategory }) => {
                         </Button>
                       </TableCell>
                       <TableCell>
-                      {/* <a style={{border: "1px solid black", padding: "12px"}} href="">Link</a> */}
+                      <a style={{border: "1px solid black", padding: "8px 10px"}} href={item.file_link}>Link</a>
                       </TableCell>
                     </TableRow>
                     <TableRow>
