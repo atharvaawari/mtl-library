@@ -25,21 +25,33 @@ const ContentHub = ({ nestedData, currentItemId }) => {
     setIsPopupOpen(!isPopupOpen);
   };
 
+ 
   const addChildData = (newData) => {
-    const newEntry = { id: tableData.length + 1, ...newData };
-    setTableData([...tableData, newEntry]);
-      console.log("setTableData", tableData)
+    setTableData((prevTableData) => {
+      const newEntry = { id: prevTableData[prevTableData.length - 1].id + 1, ...newData };
       console.log("newEntry", newEntry)
+      return [...prevTableData, newEntry];
+    });
   };
 
+//   const addChildData = (newData) => {
+//     setTableData((prevTableData) => {
+//         const newEntry = { id: prevTableData.length + 1, ...newData };
+//         console.log("setTableData", [...prevTableData, newEntry]);
+//         console.log("newEntry", newEntry);
+//         return [...prevTableData, newEntry];
+//     });
+// };
 
   const incChildCount = async (id) => {
-    const updatedArray = tableData.map((item) =>
-      item.id === id ? { ...item, child_count: item.child_count + 1 } : item
-
+    setTableData((prevTableData) =>
+      prevTableData.map((item) =>
+        item.id === id ? { ...item, child_count: item.child_count + 1 } : item
+      )
     );
-    setTableData(updatedArray);
   };
+
+  
 
   const openUpdate = (currentItemId) => {
     setSelectedItem(currentItemId);
@@ -103,8 +115,10 @@ const ContentHub = ({ nestedData, currentItemId }) => {
             <TableHead>
               <TableRow>
                 {/* Add more table headers as needed */}
+
                 <TableCell>ID</TableCell>
                 <TableCell>Title</TableCell>
+                <TableCell>Action</TableCell>
                 <TableCell>Hindi</TableCell>
                 <TableCell>English</TableCell>
                 <TableCell>Bangla</TableCell>
@@ -117,8 +131,6 @@ const ContentHub = ({ nestedData, currentItemId }) => {
                 <TableCell>Odia</TableCell>
                 <TableCell>Insta</TableCell>
                 <TableCell>FB</TableCell>
-                <TableCell>Action</TableCell>
-
 
               </TableRow>
             </TableHead>
@@ -127,6 +139,15 @@ const ContentHub = ({ nestedData, currentItemId }) => {
                 <TableRow key={nestedVideo.id}>
                   <TableCell>{nestedVideo.id}</TableCell>
                   <TableCell>{nestedVideo.title}</TableCell>
+                  <TableCell>
+                    <Button
+                      variant="contained"
+                      className="editbtn"
+                      onClick={() => openUpdate(nestedVideo)}>
+                      ✏️
+                    </Button>
+                  </TableCell>
+
                   <TableCell>
                     <Button
                       variant="contained"
@@ -378,16 +399,6 @@ const ContentHub = ({ nestedData, currentItemId }) => {
                           : "-"}
                     </Button>
                   </TableCell>
-
-                  <TableCell>
-                    <Button
-                      variant="contained"
-                      className="editbtn"
-                      onClick={() => openUpdate(nestedVideo)}>
-                      ✏️
-                    </Button>
-                  </TableCell>
-
 
                 </TableRow>
 

@@ -130,8 +130,11 @@ const DataDisplay = React.memo(({ colsSet, selectedCategory }) => {
     return acc;
   }, {});
 
-  const addData = (newData) => {
-    setTableData([...tableData, newData]);
+const addData = (newData) => {
+    // const newEntry = { id: tableData[tableData.length - 1].id + 1, ...newData };
+    setTableData([...tableData, { id: tableData[tableData.length - 1].id + 1, ...newData }]);
+    console.log(tableData[tableData.length - 1].id + 1)
+    console.log([...tableData, { id: tableData[tableData.length - 1].id + 1, ...newData }])
   };
 
   return (
