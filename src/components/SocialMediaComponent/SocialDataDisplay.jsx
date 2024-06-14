@@ -61,7 +61,7 @@ const SocialDataDisplay = React.memo(({ colsSet, selectedCategory }) => {
     setShowUpdatePopup(true);
   };
 
- 
+
 
   const handleUpdate = async (updatedData) => {
     const updatedArray = tableData.map((item) =>
@@ -76,7 +76,7 @@ const SocialDataDisplay = React.memo(({ colsSet, selectedCategory }) => {
         },
         body: JSON.stringify(updatedData),
       });
-      
+
       if (response.ok) {
         console.log("Form submitted successfully!");
         toast.success("Data updated successfully!", {
@@ -94,7 +94,53 @@ const SocialDataDisplay = React.memo(({ colsSet, selectedCategory }) => {
   };
 
   const reversedTableData = [...tableData].reverse();
-  
+
+  const getStatusClass = (published, complete) => {
+    if (published && complete) return 'success';
+    if (complete) return 'error';
+    return 'grey';
+  };
+
+  const getStatusLabel = (published, complete) => {
+    if (published && complete) return 'P';
+    if (complete) return 'C';
+    return '-';
+  };
+
+  // const statusFields = [
+  //   {
+  //     key: 'mehul_insta',
+  //     languages: [
+  //       { key: 'mehul_insta_published', completeKey: 'mehul_insta_complete' },
+  //     ]
+  //   },
+  //   {
+  //     key: 'myl_insta',
+  //     languages: [
+  //       { key: 'myl_insta_hindi_published', completeKey: 'myl_insta_hindi_complete', label: 'Hindi' },
+  //       { key: 'myl_insta_english_published', completeKey: 'myl_insta_english_complete', label: 'English' },
+  //     ]
+  //   },
+  //   {
+  //     key: 'myl_fb',
+  //     languages: [
+  //       { key: 'myl_fb_published', completeKey: 'myl_fb_complete' },
+  //     ]
+  //   },
+  // ];
+
+  // const getStatusClass = (published, complete) => {
+  //   if (published && complete) return 'success';
+  //   if (complete) return 'error';
+  //   return 'grey';
+  // };
+
+  // const getStatusLabel = (published, complete) => {
+  //   if (published && complete) return 'P';
+  //   if (complete) return 'C';
+  //   return '-';
+  // };
+
   return (
     <>
       <div>
@@ -115,138 +161,76 @@ const SocialDataDisplay = React.memo(({ colsSet, selectedCategory }) => {
         )}
       </div>
 
-        <div  style={{ marginBottom: '4rem' }}>
-          <TableContainer className='table-container' component={Paper}>
-            <Table>
-              <TableHead>
-                <TableRow>
-                  <TableCell>ID</TableCell>
-                  <TableCell>Title</TableCell>
-                  <TableCell>Action</TableCell>
-                  <TableCell>Mehul Insta</TableCell>
-                  <TableCell>MYL Insta Hindi</TableCell>
-                  <TableCell>MYL Insta English</TableCell>
-                  <TableCell>MYL FB</TableCell>
-                  <TableCell>File Link</TableCell>
-                  <TableCell></TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {reversedTableData.map((item, idx) => (
-                  <TableRow key={idx}>
-                    <TableCell>{idx + 1}</TableCell>
-                    <TableCell>{item.title}</TableCell>
-
-                    <TableCell className='btn-container'>
-                      <Button
-                        variant="contained"
-                        className="editbtn"
-                        onClick={() => openUpdate(item)}>
-                        ✏️
-                      </Button>
-                    </TableCell>
-
-                    <TableCell className='btn-container'>
-                      <Button
-                        variant="contained"
-                        className={
-                          JSON.parse(item.mehul_insta_published) === true &&
-                            JSON.parse(item.mehul_insta_complete) === true
-                            ? "success" 
-                            : JSON.parse(item.mehul_insta_complete) === true
-                              ? "error" 
-                              : "grey" 
-                        }
-                      >
-                        {JSON.parse(item.mehul_insta_complete) === true &&
-                          JSON.parse(item.mehul_insta_published) === true
-                          ? "P"
-                          : JSON.parse(item.mehul_insta_complete) === true
-                            ? "C"
-                            : "-"}
-                      </Button>
-                    </TableCell>
-                    {/* Add similar cells for other languages */}
-                    <TableCell className='btn-container'>
-                      <Button
-                        variant="contained"
-                        className={
-                          JSON.parse(item.myl_insta_hindi_published) === true &&
-                            JSON.parse(item.myl_insta_hindi_complete) === true
-                            ? "success" 
-                            : JSON.parse(item.myl_insta_hindi_complete) === true
-                              ? "error" 
-                              : "grey" 
-                        }
-                      >
-                        {
-                          JSON.parse(item.myl_insta_hindi_complete) === true &&
-                            JSON.parse(item.myl_insta_hindi_published) === true
-                            ? "P"
-                            : JSON.parse(item.myl_insta_hindi_complete) === true
-                              ? "C"
-                              : "-"
-                        }
-                      </Button>
-                    </TableCell>
-                    {/* Repeat similar cells for other languages */}
-                    <TableCell className='btn-container'>
-                      <Button
-                        variant="contained"
-                        className={
-                          JSON.parse(item.myl_insta_english_published) === true &&
-                            JSON.parse(item.myl_insta_english_complete) === true
-                            ? "success" 
-                            : JSON.parse(item.myl_insta_english_complete) === true
-                              ? "error" 
-                              : "grey" 
-                        }
-                      >
-                        {
-                          JSON.parse(item.myl_insta_english_complete) === true &&
-                            JSON.parse(item.myl_insta_english_published) === true
-                            ? "P"
-                            : JSON.parse(item.myl_insta_english_complete) === true
-                              ? "C"
-                              : "-"
-                        }
-                      </Button>
-                    </TableCell>
-                    {/* Repeat similar cells for other languages */}
-                    <TableCell className='btn-container'>
-                      <Button
-                        variant="contained"
-                        className={
-                          JSON.parse(item.myl_fb_published) === true &&
-                            JSON.parse(item.myl_fb_complete) === true
-                            ? "success" 
-                            : JSON.parse(item.myl_fb_complete) === true
-                              ? "error"
-                              : "grey"
-                        }
-                      >
-                        {JSON.parse(item.myl_fb_complete) === true &&
-                          JSON.parse(item.myl_fb_published) === true
-                          ? "P"
-                          : JSON.parse(item.myl_fb_complete) === true
-                            ? "C"
-                            : "-"}
-                      </Button>
-                    </TableCell>
-                    <TableCell>
-                      <a style={{border: "1px solid black", padding: "8px 10px"}} href={item.file_link}>Link</a>
-                      </TableCell>
-                  </TableRow>
+      <div style={{ marginBottom: '4rem' }}>
+        <TableContainer className='table-container' component={Paper}>
+          <Table>
+            <TableHead>
+              <TableRow>
+              <TableCell>ID</TableCell>
+                <TableCell>Title</TableCell>
+                <TableCell>Action</TableCell>
+                {colsSet.map((language, index) => (
+                  <TableCell key={index}>{language.replace(/_/g, ' ')}</TableCell>
                 ))}
-              </TableBody>
-            </Table>
-          </TableContainer>
-        </div>
-      
+                <TableCell>File Link</TableCell>
+                <TableCell></TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {reversedTableData.map((item, idx) => (
+                <TableRow key={idx}>
+                  <TableCell>{idx + 1}</TableCell>
+                  <TableCell>{item.title}</TableCell>
+                  <TableCell className="btn-container">
+                    <Button
+                      variant="contained"
+                      className="editbtn"
+                      onClick={() => openUpdate(item)}
+                    >
+                      ✏️
+                    </Button>
+                  </TableCell>
+                  {colsSet.map((language, index) => {
+                    const publishedKey = `${language.toLowerCase()}_published`;
+                    const completeKey = `${language.toLowerCase()}_complete`;
+                    return (
+                      <TableCell className="btn-container" key={index}>
+                        <Button
+                          variant="contained"
+                          className={getStatusClass(
+                            JSON.parse(item[publishedKey]),
+                            JSON.parse(item[completeKey])
+                          )}
+                        >
+                          {getStatusLabel(
+                            JSON.parse(item[publishedKey]),
+                            JSON.parse(item[completeKey])
+                          )}
+                        </Button>
+                      </TableCell>
+                    );
+                  })}
+                  <TableCell>
+                    {item.file_link && item.file_link.trim() !== '' && (
+                      <a
+                        style={{ border: '1px solid black', padding: '8px 10px' }}
+                        href={item.file_link}
+                      >
+                        {item.file_link.substring(0, 12)}
+                      </a>
+                    )}
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      </div>
+
       {showUpdatePopup && selectedItem && (
         <UpdateChild colsSet={colsSet} item={selectedItem} onClose={closeUpdate} onUpdate={handleUpdate} selectedCategory={selectedCategory} />
       )}
-      <Toaster position="top-right"/>
+      <Toaster position="top-right" />
 
     </>
   );

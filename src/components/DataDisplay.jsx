@@ -17,6 +17,7 @@ import Popup from "./Popup";
 import AddChildPopup from "./AddChildPopup";
 import ContentHub from "./ContentChildSection";
 import { toast, Toaster } from "react-hot-toast";
+import './DataDisplay.css';
 
 const DataDisplay = React.memo(({ colsSet, selectedCategory }) => {
 
@@ -30,6 +31,7 @@ const DataDisplay = React.memo(({ colsSet, selectedCategory }) => {
 
   const toggleAddPopUp = () => {
     setAddPopUp(!addPopUp)
+
   }
 
   const fetchTableData = async (tablename) => {
@@ -130,22 +132,27 @@ const DataDisplay = React.memo(({ colsSet, selectedCategory }) => {
     return acc;
   }, {});
 
-  // const addData = (newData) => {
-  //     const newEntry = { id: tableData[tableData.length - 1].id + 1, ...newData };
-  //     setTableData([...tableData, { id: tableData[tableData.length - 1].id + 1, ...newData }]);
-  //     console.log(tableData[tableData.length - 1].id + 1)
-  //     console.log([...tableData, { id: tableData[tableData.length - 1].id + 1, ...newData }])
-  //     setCurrentItemId([...tableData, { id: tableData[tableData.length - 1].id + 1, ...newData }])  
-  //     console.log( "currentItemId"  ,currentItemId)
-  //   };
+  const addData = (newData) => {
+    const newEntry = { id: tableData[tableData.length - 1].id + 1, ...newData };
+    setTableData([...tableData, { id: tableData[tableData.length - 1].id + 1, ...newData }]);
+    setCurrentItemId(newEntry.id)
+    // console.log(tableData[tableData.length - 1].id + 1)
+    // console.log([...tableData, { id: tableData[tableData.length - 1].id + 1, ...newData }])
+    // setCurrentItemId([...tableData, { id: tableData[tableData.length - 1].id + 1, ...newData }])  
+    // console.log( "currentItemId"  ,currentItemId)
+  };
 
-  // const addData = async (newData) => {
-  //   const newEntry = { id: tableData[tableData.length - 1].id + 1, ...newData };
-  //   setTableData((prevTableData) => [...prevTableData, newEntry]);
-  //   setCurrentItemId(newEntry.id);
-  //   console.log("newEntry.id", newEntry.id)
-  //   console.log("currentItemId", currentItemId)
-  // };
+  const getStatusClass = (published, complete) => {
+    if (published && complete) return 'success';
+    if (complete) return 'error';
+    return 'grey';
+  };
+
+  const getStatusLabel = (published, complete) => {
+    if (published && complete) return 'P';
+    if (complete) return 'C';
+    return '-';
+  };
 
   return (
     <>
@@ -157,6 +164,7 @@ const DataDisplay = React.memo(({ colsSet, selectedCategory }) => {
           onClick={toggleAddPopUp}>
           Add
         </Button>
+
         {addPopUp && (
           <Popup
             onClose={toggleAddPopUp}
@@ -171,28 +179,29 @@ const DataDisplay = React.memo(({ colsSet, selectedCategory }) => {
           <TableContainer component={Paper}>
             <Table>
               <TableHead>
-                <TableRow>
-                  <TableCell>ID</TableCell>
-                  <TableCell style={{ minWidth: '100px' }}>Title</TableCell>
-                  <TableCell>Action</TableCell>
-                  <TableCell></TableCell>
-                  <TableCell>Hindi</TableCell>
-                  <TableCell>English</TableCell>
-                  <TableCell>Bangla</TableCell>
-                  <TableCell>Telugu</TableCell>
-                  <TableCell>Tamil</TableCell>
-                  <TableCell>Malayalam</TableCell>
-                  <TableCell>Portuguese</TableCell>
-                  <TableCell>Spanish</TableCell>
-                  <TableCell>Kannada</TableCell>
-                  <TableCell>Odia</TableCell>
-                  <TableCell>Insta</TableCell>
-                  <TableCell>FB</TableCell>
-                  <TableCell>File Link</TableCell>
+                <TableRow className="headding-item">
+                  <TableCell >ID</TableCell>
+                  <TableCell className="headding-item" style={{ minWidth: '170px', textAlign: "center" }}>Title</TableCell>
+                  <TableCell className="headding-item">Action</TableCell>
+                  <TableCell className="headding-item"></TableCell>
+                  <TableCell className="headding-item">Hindi</TableCell>
+                  <TableCell className="headding-item">English</TableCell>
+                  <TableCell className="headding-item">Bangla</TableCell>
+                  <TableCell className="headding-item">Telugu</TableCell>
+                  <TableCell className="headding-item">Tamil</TableCell>
+                  <TableCell className="headding-item">Malayalam</TableCell>
+                  <TableCell className="headding-item">Portuguese</TableCell>
+                  <TableCell className="headding-item">Spanish</TableCell>
+                  <TableCell className="headding-item">Kannada</TableCell>
+                  <TableCell className="headding-item">Odia</TableCell>
+                  <TableCell className="headding-item">Insta</TableCell>
+                  <TableCell className="headding-item">FB</TableCell>
+                  <TableCell className="headding-item">File Link</TableCell>
 
                 </TableRow>
               </TableHead>
               <TableBody>
+
                 {groupedData[channel].reverse().map((item, idx) => (
                   <React.Fragment key={idx}>
                     <TableRow>
@@ -222,259 +231,32 @@ const DataDisplay = React.memo(({ colsSet, selectedCategory }) => {
 
                         </Button>
                       </TableCell>
-
+                      {colsSet.map((language, index) => {
+                        const publishedKey = `${language.toLowerCase()}_published`;
+                        const completeKey = `${language.toLowerCase()}_complete`;
+                        return (
+                          <TableCell className="btn-container" key={index}>
+                            <Button
+                              variant="contained"
+                              className={getStatusClass(
+                                JSON.parse(item[publishedKey]),
+                                JSON.parse(item[completeKey])
+                              )}
+                            >
+                              {getStatusLabel(
+                                JSON.parse(item[publishedKey]),
+                                JSON.parse(item[completeKey])
+                              )}
+                            </Button>
+                          </TableCell>
+                        );
+                      })}
                       <TableCell>
-                        <Button
-                          variant="contained"
-                          className={
-                            JSON.parse(item.hindi_published) === true &&
-                              JSON.parse(item.hindi_complete) === true
-                              ? "success"
-                              : JSON.parse(item.hindi_complete) === true
-                                ? "error"
-                                : "grey"
-                          }>
-                          {JSON.parse(item.hindi_complete) === true &&
-                            JSON.parse(item.hindi_published) === true
-                            ? "P"
-                            : JSON.parse(item.hindi_complete) === true
-                              ? "C"
-                              : "-"}
-                        </Button>
-                      </TableCell>
-
-                      {/* Add similar cells for other languages */}
-                      <TableCell>
-                        <Button
-                          variant="contained"
-                          className={
-                            JSON.parse(item.english_published) === true &&
-                              JSON.parse(item.english_complete) === true
-                              ? "success"
-                              : JSON.parse(item.english_complete) === true
-                                ? "error"
-                                : "grey"
-                          }>
-                          {JSON.parse(item.english_complete) === true &&
-                            JSON.parse(item.english_published) === true
-                            ? "P"
-                            : JSON.parse(item.english_complete) === true
-                              ? "C"
-                              : "-"}
-                        </Button>
-                      </TableCell>
-
-                      {/* Repeat similar cells for other languages */}
-                      <TableCell>
-                        <Button
-                          variant="contained"
-                          className={
-                            JSON.parse(item.bangla_published) === true &&
-                              JSON.parse(item.bangla_complete) === true
-                              ? "success"
-                              : JSON.parse(item.bangla_complete) === true
-                                ? "error"
-                                : "grey"
-                          }>
-                          {JSON.parse(item.bangla_complete) === true &&
-                            JSON.parse(item.bangla_published) === true
-                            ? "P"
-                            : JSON.parse(item.bangla_complete) === true
-                              ? "C"
-                              : "-"}
-                        </Button>
-                      </TableCell>
-
-                      {/* Repeat similar cells for other languages */}
-                      <TableCell>
-                        <Button
-                          variant="contained"
-                          className={
-                            JSON.parse(item.telugu_complete) === true &&
-                              JSON.parse(item.telugu_published) === true
-                              ? "success"
-                              : JSON.parse(item.telugu_complete) === true
-                                ? "error"
-                                : "grey"
-                          }>
-                          {JSON.parse(item.telugu_complete) === true &&
-                            JSON.parse(item.telugu_published) === true
-                            ? "P"
-                            : JSON.parse(item.telugu_complete) === true
-                              ? "C"
-                              : "-"}
-                        </Button>
-                      </TableCell>
-
-                      {/* Repeat similar cells for other languages */}
-                      <TableCell>
-                        <Button
-                          variant="contained"
-                          className={
-                            JSON.parse(item.tamil_complete) === true &&
-                              JSON.parse(item.tamil_published) === true
-                              ? "success"
-                              : JSON.parse(item.tamil_complete) === true
-                                ? "error"
-                                : "grey"
-                          }>
-                          {JSON.parse(item.tamil_complete) === true &&
-                            JSON.parse(item.tamil_published) === true
-                            ? "P"
-                            : JSON.parse(item.tamil_complete) === true
-                              ? "C"
-                              : "-"}
-                        </Button>
-                      </TableCell>
-
-                      {/* Repeat similar cells for other languages */}
-                      <TableCell>
-                        <Button
-                          variant="contained"
-                          className={
-                            JSON.parse(item.malayalam_complete) === true &&
-                              JSON.parse(item.malayalam_published) === true
-                              ? "success"
-                              : JSON.parse(item.malayalam_complete) === true
-                                ? "error"
-                                : "grey"
-                          }>
-                          {JSON.parse(item.malayalam_complete) === true &&
-                            JSON.parse(item.malayalam_published) === true
-                            ? "P"
-                            : JSON.parse(item.malayalam_complete) === true
-                              ? "C"
-                              : "-"}
-                        </Button>
-                      </TableCell>
-
-                      {/* Repeat similar cells for other languages */}
-                      <TableCell>
-                        <Button
-                          variant="contained"
-                          className={
-                            JSON.parse(item.portuguese_complete) === true &&
-                              JSON.parse(item.portuguese_published) === true
-                              ? "success"
-                              : JSON.parse(item.portuguese_complete) === true
-                                ? "error"
-                                : "grey"
-                          }>
-                          {JSON.parse(item.portuguese_complete) === true &&
-                            JSON.parse(item.portuguese_published) === true
-                            ? "P"
-                            : JSON.parse(item.portuguese_complete) === true
-                              ? "C"
-                              : "-"}
-                        </Button>
-                      </TableCell>
-
-                      {/* Repeat similar cells for other languages */}
-                      <TableCell>
-                        <Button
-                          variant="contained"
-                          className={
-                            JSON.parse(item.spanish_complete) === true &&
-                              JSON.parse(item.spanish_published) === true
-                              ? "success"
-                              : JSON.parse(item.spanish_complete) === true
-                                ? "error"
-                                : "grey"
-                          }>
-                          {JSON.parse(item.spanish_complete) === true &&
-                            JSON.parse(item.spanish_published) === true
-                            ? "P"
-                            : JSON.parse(item.spanish_complete) === true
-                              ? "C"
-                              : "-"}
-                        </Button>
-                      </TableCell>
-
-                      {/* Repeat similar cells for other languages */}
-                      <TableCell>
-                        <Button
-                          variant="contained"
-                          className={
-                            JSON.parse(item.kannada_complete) === true &&
-                              JSON.parse(item.kannada_published) === true
-                              ? "success"
-                              : JSON.parse(item.kannada_complete) === true
-                                ? "error"
-                                : "grey"
-                          }>
-                          {JSON.parse(item.kannada_complete) === true &&
-                            JSON.parse(item.kannada_published) === true
-                            ? "P"
-                            : JSON.parse(item.kannada_complete) === true
-                              ? "C"
-                              : "-"}
-                        </Button>
-                      </TableCell>
-
-                      {/* Repeat similar cells for other languages */}
-                      <TableCell>
-                        <Button
-                          variant="contained"
-                          className={
-                            JSON.parse(item.odia_complete) === true &&
-                              JSON.parse(item.odia_published) === true
-                              ? "success"
-                              : JSON.parse(item.odia_complete) === true
-                                ? "error"
-                                : "grey"
-                          }>
-                          {JSON.parse(item.odia_complete) === true &&
-                            JSON.parse(item.odia_published) === true
-                            ? "P"
-                            : JSON.parse(item.odia_complete) === true
-                              ? "C"
-                              : "-"}
-                        </Button>
-                      </TableCell>
-
-                      {/* Repeat similar cells for other languages */}
-                      <TableCell>
-                        <Button
-                          variant="contained"
-                          className={
-                            JSON.parse(item.insta_complete) === true &&
-                              JSON.parse(item.insta_published) === true
-                              ? "success"
-                              : JSON.parse(item.insta_complete) === true
-                                ? "error"
-                                : "grey"
-                          }>
-                          {JSON.parse(item.insta_complete) === true &&
-                            JSON.parse(item.insta_published) === true
-                            ? "P"
-                            : JSON.parse(item.insta_complete) === true
-                              ? "C"
-                              : "-"}
-                        </Button>
-                      </TableCell>
-
-                      {/* Repeat similar cells for other languages */}
-                      <TableCell>
-                        <Button
-                          variant="contained"
-                          className={
-                            JSON.parse(item.fb_complete) === true &&
-                              JSON.parse(item.fb_published) === true
-                              ? "success"
-                              : JSON.parse(item.fb_complete) === true
-                                ? "error"
-                                : "grey"
-                          }>
-                          {JSON.parse(item.fb_complete) === true &&
-                            JSON.parse(item.fb_published) === true
-                            ? "P"
-                            : JSON.parse(item.fb_complete) === true
-                              ? "C"
-                              : "-"}
-                        </Button>
-                      </TableCell>
-                      <TableCell>
-                        <a style={{ border: "1px solid black", padding: "8px 10px" }} href={item.file_link}>Link</a>
+                        {item.file_link && item.file_link.trim() !== "" && (
+                          <a style={{ border: "1px solid black", padding: "8px 10px" }} href={item.file_link}>
+                            {item.file_link.substring(0, 12)}
+                          </a>
+                        )}
                       </TableCell>
                     </TableRow>
                     <TableRow>

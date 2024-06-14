@@ -11,6 +11,7 @@ import {
 import "../../FormComponent.css";
 import AddPopup from "../globalComponents/AddPopup";
 import UpdateChild from "../globalComponents/UpdatePopup";
+import ButtonPopup from '../globalComponents/ButtonPopup';
 import { toast, Toaster } from "react-hot-toast";
 
 const GameDataDisplay = React.memo(({ colsSet, selectedCategory }) => {
@@ -18,6 +19,7 @@ const GameDataDisplay = React.memo(({ colsSet, selectedCategory }) => {
   const [addPopup, setAddPopup] = useState(false);
   const [showUpdatePopup, setShowUpdatePopup] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
+  const [showButtonPopup, setShowButtonPopup] = useState(false);
 
   const fetchTableData = async (tablename) => {
     try {
@@ -25,7 +27,7 @@ const GameDataDisplay = React.memo(({ colsSet, selectedCategory }) => {
 
       const response = await fetch(url);
       const data = await response.json();
-      
+
       setTableData(data);
     } catch (error) {
       console.error('Error fetching data:', error);
@@ -36,6 +38,17 @@ const GameDataDisplay = React.memo(({ colsSet, selectedCategory }) => {
     fetchTableData('game_video');
   }, [selectedCategory]);
 
+  const toggleButtonPopup = () => {
+    setShowButtonPopup(!showButtonPopup);
+  };
+
+
+
+  const handleButtonPopup = (item) => {
+    toggleButtonPopup()
+    setSelectedItem(item);
+
+  };
 
   const addData = (newData) => {
     const newEntry = { id: tableData.length + 1, ...newData };
@@ -69,7 +82,7 @@ const GameDataDisplay = React.memo(({ colsSet, selectedCategory }) => {
         },
         body: JSON.stringify(updatedData),
       });
-        
+
       if (response.ok) {
         toast.success("Data updated successfully!", {
           position: "top-right",
@@ -85,8 +98,20 @@ const GameDataDisplay = React.memo(({ colsSet, selectedCategory }) => {
     closeUpdate();
   };
 
-
   const reversedTableData = [...tableData].reverse();
+
+
+  const getStatusClass = (published, complete) => {
+    if (published && complete) return 'success';
+    if (complete) return 'error';
+    return 'grey';
+  };
+
+  const getStatusLabel = (published, complete) => {
+    if (published && complete) return 'P';
+    if (complete) return 'C';
+    return '-';
+  };
 
   return (
     <>
@@ -112,124 +137,71 @@ const GameDataDisplay = React.memo(({ colsSet, selectedCategory }) => {
           <Table>
             <TableHead>
               <TableRow>
-                <TableCell>ID</TableCell>
-                <TableCell style={{ minWidth: "100px" }}>Title</TableCell>
+              <TableCell>ID</TableCell>
+                <TableCell>Title</TableCell>
                 <TableCell>Action</TableCell>
-                <TableCell>Hindi</TableCell>
-                <TableCell>English</TableCell>
-                <TableCell>Bangla</TableCell>
-                <TableCell>Portuguese</TableCell>
-                <TableCell>Link</TableCell>
+                {colsSet.map((language, index) => (
+                  <TableCell key={index}>{language.replace(/_/g, ' ')}</TableCell>
+                ))}
+                <TableCell>File Link</TableCell>
                 <TableCell></TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
-              {reversedTableData.map((item, idx) => ( 
-                <TableRow key={idx} className="MuiTableRow-root css-1q1u3t4-MuiTableRow-root">
-                  <TableCell className="MuiTableCell-root MuiTableCell-body MuiTableCell-sizeMedium css-1ex1afd-MuiTableCell-root">
-                    {idx + 1}
-                  </TableCell>
-                  <TableCell className="MuiTableCell-root MuiTableCell-body MuiTableCell-sizeMedium css-1ex1afd-MuiTableCell-root">
-                    {item.title}
-                  </TableCell>
-
-                  <TableCell>
+            {reversedTableData.map((item, idx) => (
+                <TableRow key={idx}>
+                  <TableCell>{idx + 1}</TableCell>
+                  <TableCell>{item.title}</TableCell>
+                  <TableCell className="btn-container">
                     <Button
                       variant="contained"
                       className="editbtn"
-                      onClick={() => openUpdate(item)}>
+                      onClick={() => openUpdate(item)}
+                    >
                       ✏️
                     </Button>
                   </TableCell>
-                  
-                  <TableCell>
-                    <Button
-                      variant="contained"
-                      className={
-                        JSON.parse(item.hindi_published) === true &&
-                        JSON.parse(item.hindi_complete) === true
-                          ? "success"
-                          : JSON.parse(item.hindi_complete) === true
-                          ? "error"
-                          : "grey"
-                      }>
-                      {JSON.parse(item.hindi_complete) === true &&
-                      JSON.parse(item.hindi_published) === true
-                        ? "P"
-                        : JSON.parse(item.hindi_complete) === true
-                        ? "C"
-                        : "-"}
-                    </Button>
-                  </TableCell>
-
-                  <TableCell>
-                    <Button
-                      variant="contained"
-                      className={
-                        JSON.parse(item.english_published) === true &&
-                        JSON.parse(item.english_complete) === true
-                          ? "success"
-                          : JSON.parse(item.english_complete) === true
-                          ? "error"
-                          : "grey"
-                      }>
-                      {JSON.parse(item.english_complete) === true &&
-                      JSON.parse(item.english_published) === true
-                        ? "P"
-                        : JSON.parse(item.english_complete) === true
-                        ? "C"
-                        : "-"}
-                    </Button>
-                  </TableCell>
-
-                  <TableCell>
-                    <Button
-                      variant="contained"
-                      className={
-                        JSON.parse(item.bangla_published) === true &&
-                        JSON.parse(item.bangla_complete) === true
-                          ? "success"
-                          : JSON.parse(item.bangla_complete) === true
-                          ? "error"
-                          : "grey"
-                      }>
-                      {JSON.parse(item.bangla_complete) === true &&
-                      JSON.parse(item.bangla_published) === true
-                        ? "P"
-                        : JSON.parse(item.bangla_complete) === true
-                        ? "C"
-                        : "-"}
-                    </Button>
-                  </TableCell>
-
-                  <TableCell>
-                    <Button
-                      variant="contained"
-                      className={
-                        JSON.parse(item.portuguese_published) === true &&
-                        JSON.parse(item.portuguese_complete) === true
-                          ? "success"
-                          : JSON.parse(item.portuguese_complete) === true
-                          ? "error"
-                          : "grey"
-                      }>
-                      {JSON.parse(item.portuguese_complete) === true &&
-                      JSON.parse(item.portuguese_published) === true
-                        ? "P"
-                        : JSON.parse(item.portuguese_complete) === true
-                        ? "C"
-                        : "-"}
-                    </Button>
-                  </TableCell>
-                  <TableCell>
-                      <a style={{border: "1px solid black", padding: "8px 10px"}} href={item.file_link}>File Link</a>
+                  {colsSet.map((language, index) => {
+                    const publishedKey = `${language.toLowerCase()}_published`;
+                    const completeKey = `${language.toLowerCase()}_complete`;
+                    return (
+                      <TableCell className="btn-container" key={index}>
+                        <Button
+                          variant="contained"
+                          className={getStatusClass(
+                            JSON.parse(item[publishedKey]),
+                            JSON.parse(item[completeKey])
+                          )}
+                        >
+                          {getStatusLabel(
+                            JSON.parse(item[publishedKey]),
+                            JSON.parse(item[completeKey])
+                          )}
+                        </Button>
                       </TableCell>
+                    );
+                  })}
+                  <TableCell>
+                    {item.file_link && item.file_link.trim() !== '' && (
+                      <a
+                        style={{ border: '1px solid black', padding: '8px 10px' }}
+                        href={item.file_link}
+                      >
+                        {item.file_link.substring(0, 12)}
+                      </a>
+                    )}
+                  </TableCell>
                 </TableRow>
               ))}
             </TableBody>
           </Table>
         </TableContainer>
       </div>
+
+      {showButtonPopup && (
+        <ButtonPopup onClose={toggleButtonPopup} colsSet={colsSet} item={selectedItem} onUpdate={submitUpdate} selectedCategory={selectedCategory} />
+      )}
+
       {showUpdatePopup && selectedItem && (
         <UpdateChild colsSet={colsSet} item={selectedItem} onClose={closeUpdate} onUpdate={submitUpdate} selectedCategory={selectedCategory} />
       )}

@@ -63,7 +63,7 @@ const FormComponent = () => {
       </div>
 
       {selectedCategory !== 'insta-fb-content' && selectedCategory !== 'game-videos' && selectedCategory !== '' && (
-        <DataDisplay selectedCategory={selectedCategory} />
+        <DataDisplay colsSet={colsSet} selectedCategory={selectedCategory} />
       )}
       {selectedCategory === 'insta-fb-content' && (
         <SocialDataDisplay colsSet={colsSet} selectedCategory={selectedCategory} />

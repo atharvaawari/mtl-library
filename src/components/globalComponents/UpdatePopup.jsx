@@ -54,7 +54,6 @@ const UpdatePopup = ({ item, onClose, onUpdate, colsSet, selectedCategory }) => 
                   name={`${language.toLowerCase()}_complete`}
                   onChange={handleChange}
                   checked={JSON.parse(updatedItem[`${language.toLowerCase()}_complete`]) === true}
-
                 />
                 
                 <label htmlFor={`${language.toLowerCase()}_complete`}>Complete</label>
@@ -78,7 +77,6 @@ const UpdatePopup = ({ item, onClose, onUpdate, colsSet, selectedCategory }) => 
                 name="file_link"
                 onChange={handleChange}
                 value={updatedItem.file_link}
-                required
               />
             </div>
           </div>

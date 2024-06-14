@@ -31,3 +31,8 @@ border-color: #b02a37;
   display: flex;
   justify-content: center;
 } */
+
+
+.headding-item{
+  text-align: center !important;
+}

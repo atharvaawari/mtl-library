@@ -322,8 +322,7 @@ const UpdatePopup = ({ item, onClose, onUpdate }) => {
                 id="file_link"
                 name="file_link"
                 onChange={handleChange}
-                value={updatedItem.file_link}
-                required
+                value={(updatedItem.file_link)}
               />
             </div>
 

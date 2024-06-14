@@ -13,7 +13,8 @@ const AddPopup = ({ onClose, addData, selectedCategory, colsSet }) => {
             acc[`${language.toLowerCase().replaceAll(' ','_')}_complete`] = false;
             acc[`${language.toLowerCase().replaceAll(' ','_')}_published`] = false;
             return acc;
-        }, {})
+        }, {}),
+        file_link: ''
     };
 
     const [formData, setFormData] = useState(initialFormData);
@@ -130,7 +131,6 @@ const AddPopup = ({ onClose, addData, selectedCategory, colsSet }) => {
                                 id="file_link"
                                 name="file_link"
                                 onChange={handleChange}
-                                required
                             />
                         </div>
 
