@@ -55,7 +55,7 @@ const ButtonPopup = ({ item, selectedLanguage, onClose, onUpdate }) => {
                 <input
                   type="checkbox"
                   id={`${selectedLanguage.toLowerCase()}_published`}
-                  name={`${selectedLanguage.toLowerCase()}_published`}
+                  name={`${selectedLanguage.toLowerCase()}_published` }
                   onChange={handleChange}
                   checked={JSON.parse(updatedItem[`${selectedLanguage.toLowerCase()}_published`]) === true}
                 />

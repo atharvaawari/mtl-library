@@ -135,7 +135,7 @@ const Popup = ({ onClose, addData, selectedCategory }) => {
                 </div>
 
                 <div>
-                    <form onSubmit={handleSubmit}>
+                    <form >
                         <label htmlFor="title">Title</label>
                         <input
                             type="text"
@@ -193,10 +193,9 @@ const Popup = ({ onClose, addData, selectedCategory }) => {
                                 onChange={handleChange}
                             />
                         </div>
-
                     </form>
                     <div className="btn-box">
-                        <button type="submit">Submit</button>
+                        <button onClick={handleSubmit} type="submit">Submit</button>
                         <button type="button" onClick={onClose}>Close</button>
                     </div>
                 </div>

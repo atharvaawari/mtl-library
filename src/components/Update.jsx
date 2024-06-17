@@ -326,8 +326,6 @@ const UpdatePopup = ({ item, onClose, onUpdate }) => {
               />
             </div>
 
-
-
           </div>
           <div className="btn-box">
             <button onClick={handleUpdate}>Update</button>

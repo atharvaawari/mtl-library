@@ -20,8 +20,8 @@ const UpdatePopup = ({ item, onClose, onUpdate, colsSet }) => {
   };
 
   const handleUpdate = () => {
-    onUpdate(updatedItem); // Send updated item to parent component
-    onClose(); // Close the popup
+    onUpdate(updatedItem); 
+    onClose(); 
     setUpdatedItem((prevItem) => [...prevItem, updatedItem]);
 
     toast.success('Data inserted successfully!', {

@@ -94,6 +94,7 @@ const DataDisplay = React.memo(({ colsSet, selectedCategory }) => {
           data = await response.json();
 
           setNestedData(data);
+          
         } else {
           console.error("Failed to fetch nested data");
         }
@@ -123,7 +124,7 @@ const DataDisplay = React.memo(({ colsSet, selectedCategory }) => {
         // toast.success("Data updated successfully!", {
         //   position: "top-right",
         // });
-        
+
         console.log("Form submitted successfully!");
       } else {
         console.error("Failed to submit form");
@@ -152,12 +153,10 @@ const DataDisplay = React.memo(({ colsSet, selectedCategory }) => {
 
   const addData = (newData) => {
     const newEntry = { id: tableData[tableData.length - 1].id + 1, ...newData };
-    setTableData([...tableData, { id: tableData[tableData.length - 1].id + 1, ...newData }]);
+    setTableData([...tableData, newEntry]);
     setCurrentItemId(newEntry.id)
-    // console.log(tableData[tableData.length - 1].id + 1)
-    // console.log([...tableData, { id: tableData[tableData.length - 1].id + 1, ...newData }])
-    // setCurrentItemId([...tableData, { id: tableData[tableData.length - 1].id + 1, ...newData }])  
-    // console.log( "currentItemId"  ,currentItemId)
+    console.log(newEntry.id)
+    console.log(selectedItem)
   };
 
   const getStatusClass = (published, complete) => {
@@ -216,7 +215,7 @@ const DataDisplay = React.memo(({ colsSet, selectedCategory }) => {
 
                 {groupedData[channel].reverse().map((item, idx) => (
                   <React.Fragment key={idx}>
-                    <TableRow>
+                    <TableRow >
 
                       <TableCell>{idx + 1}</TableCell>
                       <TableCell>{item.title}</TableCell>
@@ -229,7 +228,7 @@ const DataDisplay = React.memo(({ colsSet, selectedCategory }) => {
                           ✏️
                         </Button>
                       </TableCell>
-                      <TableCell>
+                      <TableCell >
                         <Button
                           variant="contained"
                           onClick={() => handleExpandClick(idx, item.id)}>
@@ -255,7 +254,7 @@ const DataDisplay = React.memo(({ colsSet, selectedCategory }) => {
                               variant="contained"
                               className={getStatusClass(isPublished, isComplete)}
                             >
-                             {getStatusLabel(isPublished, isComplete)}
+                              {getStatusLabel(isPublished, isComplete)}
                             </Button>
                           </TableCell>
                         );
@@ -268,7 +267,7 @@ const DataDisplay = React.memo(({ colsSet, selectedCategory }) => {
                         )}
                       </TableCell>
                     </TableRow>
-                    <TableRow>
+                    <TableRow >
                       <TableCell
                         style={{ paddingBottom: 0, paddingTop: 0 }}
                         colSpan={14}>
@@ -277,7 +276,7 @@ const DataDisplay = React.memo(({ colsSet, selectedCategory }) => {
                           timeout="auto"
                           unmountOnExit>
                           <Box margin={1}>
-                            <ContentHub nestedData={nestedData} currentItemId={currentItemId} />
+                            <ContentHub nestedData={nestedData} currentItemId={item.id} />
                           </Box>
                         </Collapse>
                       </TableCell>
@@ -287,17 +286,17 @@ const DataDisplay = React.memo(({ colsSet, selectedCategory }) => {
               </TableBody>
             </Table>
           </TableContainer>
-          
+
         </div>
       ))}
 
       {showButtonPopup && (
-        <ButtonPopup 
-        onClose={toggleButtonPopup} 
-        item={selectedItem} 
-        selectedLanguage={selectLanguage} 
-        onUpdate={handleUpdate} 
-        selectedCategory={selectedCategory}
+        <ButtonPopup
+          onClose={toggleButtonPopup}
+          item={selectedItem}
+          selectedLanguage={selectLanguage}
+          onUpdate={handleUpdate}
+          selectedCategory={selectedCategory}
         />
       )}
 
@@ -311,7 +310,7 @@ const DataDisplay = React.memo(({ colsSet, selectedCategory }) => {
       )}
       <Toaster position="top-right" />
     </>
-    
+
   );
 });
 

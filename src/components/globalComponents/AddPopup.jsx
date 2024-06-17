@@ -10,8 +10,8 @@ const AddPopup = ({ onClose, addData, selectedCategory, colsSet }) => {
         title: '',
         channel: selectedCategory,
         ...colsSet.reduce((acc, language) => {
-            acc[`${language.toLowerCase().replaceAll(' ','_')}_complete`] = false;
-            acc[`${language.toLowerCase().replaceAll(' ','_')}_published`] = false;
+            acc[`${language.toLowerCase().replaceAll(' ', '_')}_complete`] = false;
+            acc[`${language.toLowerCase().replaceAll(' ', '_')}_published`] = false;
             return acc;
         }, {}),
         file_link: ''
@@ -36,7 +36,7 @@ const AddPopup = ({ onClose, addData, selectedCategory, colsSet }) => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-            console.log("formData", formData);
+        console.log("formData", formData);
         try {
             const response = await fetch('http://localhost:3001/submit', {
                 method: 'POST',
@@ -45,37 +45,25 @@ const AddPopup = ({ onClose, addData, selectedCategory, colsSet }) => {
                 },
                 body: JSON.stringify(formData)
             });
-    
+
             if (response.ok) {
                 console.log('Form submitted successfully!');
                 addData(formData);
-                // setFormData({
-                //     title: '',
-                //     channel: '',
-                //     hindi_complete: false,
-                //     hindi_published: false,
-                //     english_complete: false,
-                //     english_published: false,
-                //     bangla_complete: false,
-                //     bangla_published: false,
-                //     portuguese_complete: false,
-                //     portuguese_published: false
-                // });
-    
+
                 toast.success('Data inserted successfully!', {
                     position: 'top-right',
                 });
-    
+
             } else {
                 console.error('Failed to submit form');
             }
         } catch (error) {
             console.error('Error submitting form:', error);
         }
-    
+
         onClose();
     };
-    
+
 
     return (
         <>
@@ -86,9 +74,9 @@ const AddPopup = ({ onClose, addData, selectedCategory, colsSet }) => {
                             X
                         </IconButton>
                     </div>
-                
+
                     <div>
-                        <form onSubmit={handleSubmit}>
+                        <form >
                             <label htmlFor="title">Title</label>
                             <input
                                 type="text"
@@ -125,19 +113,19 @@ const AddPopup = ({ onClose, addData, selectedCategory, colsSet }) => {
                                 </div>
                             ))}
                             <div>
-                            <label htmlFor="file_link">File Link</label>
-                            <input
-                                type="text"
-                                id="file_link"
-                                name="file_link"
-                                onChange={handleChange}
-                            />
-                        </div>
-                        </form>
-                            <div className="btn-box">
-                                <button type="submit">Submit</button>
-                                <button type="button" onClick={onClose}>Close</button>
+                                <label htmlFor="file_link">File Link</label>
+                                <input
+                                    type="text"
+                                    id="file_link"
+                                    name="file_link"
+                                    onChange={handleChange}
+                                />
                             </div>
+                        </form>
+                        <div className="btn-box">
+                            <button onClick={handleSubmit} type="submit">Submit</button>
+                            <button type="button" onClick={onClose}>Close</button>
+                        </div>
                     </div>
                 </div>
             </div>
