@@ -246,20 +246,16 @@ const DataDisplay = React.memo(({ colsSet, selectedCategory }) => {
                       {colsSet.map((language, index) => {
                         const publishedKey = `${language.toLowerCase()}_published`;
                         const completeKey = `${language.toLowerCase()}_complete`;
+                        const isPublished = item[publishedKey] ? JSON.parse(item[publishedKey]) : false;
+                        const isComplete = item[completeKey] ? JSON.parse(item[completeKey]) : false;
                         return (
                           <TableCell className="btn-container" key={index}>
                             <Button
                               onClick={() => handleButtonPopup(language, item)}
                               variant="contained"
-                              className={getStatusClass(
-                                JSON.parse(item[publishedKey]),
-                                JSON.parse(item[completeKey])
-                              )}
+                              className={getStatusClass(isPublished, isComplete)}
                             >
-                              {getStatusLabel(
-                                JSON.parse(item[publishedKey]),
-                                JSON.parse(item[completeKey])
-                              )}
+                             {getStatusLabel(isPublished, isComplete)}
                             </Button>
                           </TableCell>
                         );

@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
 import { toast } from 'react-hot-toast';
 import IconButton from '@mui/material/IconButton';
-
-
 import './Popup.css';
 
 const Popup = ({ onClose, addData, selectedCategory }) => {
@@ -66,9 +64,9 @@ const Popup = ({ onClose, addData, selectedCategory }) => {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify(formData)
-                
+
             });
-            console.log("formData",formData )
+            console.log("formData", formData)
             if (response.ok) {
                 console.log('Form submitted successfully!');
                 addData(formData);
@@ -175,15 +173,15 @@ const Popup = ({ onClose, addData, selectedCategory }) => {
                                 <label htmlFor={`${language.toLowerCase()}_complete`}>Complete</label>
                                 <br />
                                 <label htmlFor={`${language.toLowerCase()}_link`}>{`${language.toLowerCase()} link`}</label>
-<input
-    id={`${language.toLowerCase()}_link`}
-    name={`${language.toLowerCase()}_link`}
-    checked={formData[`${language.toLowerCase()}_link`]}
-    onChange={handleChange}
+                                <input
+                                    id={`${language.toLowerCase()}_link`}
+                                    name={`${language.toLowerCase()}_link`}
+                                    checked={formData[`${language.toLowerCase()}_link`]}
+                                    onChange={handleChange}
 
-/>
+                                />
 
-<br />
+                                <br />
                             </div>
                         ))}
                         <div>
@@ -196,11 +194,11 @@ const Popup = ({ onClose, addData, selectedCategory }) => {
                             />
                         </div>
 
-                        <div className="btn-box">
-                            <button type="submit">Submit</button>
-                            <button type="button" onClick={onClose}>Close</button>
-                        </div>
                     </form>
+                    <div className="btn-box">
+                        <button type="submit">Submit</button>
+                        <button type="button" onClick={onClose}>Close</button>
+                    </div>
                 </div>
             </div>
         </div>

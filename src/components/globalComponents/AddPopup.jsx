@@ -133,12 +133,11 @@ const AddPopup = ({ onClose, addData, selectedCategory, colsSet }) => {
                                 onChange={handleChange}
                             />
                         </div>
-
+                        </form>
                             <div className="btn-box">
                                 <button type="submit">Submit</button>
                                 <button type="button" onClick={onClose}>Close</button>
                             </div>
-                        </form>
                     </div>
                 </div>
             </div>
