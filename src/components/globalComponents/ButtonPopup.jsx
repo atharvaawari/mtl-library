@@ -1,31 +1,31 @@
 import React, { useState } from 'react'
 import "../Popup.css";
 import IconButton from "@mui/material/IconButton";
+import { toast, Toaster } from "react-hot-toast";
 
-const ButtonPopup = ({ item, onClose }) => {
 
+const ButtonPopup = ({ item, selectedLanguage, onClose, onUpdate }) => {
 
-  // State to hold the updated item
   const [updatedItem, setUpdatedItem] = useState(item);
 
   const handleChange = (e) => {
     const { name, type, checked } = e.target;
 
-    // Update the updatedItem state based on input type
     setUpdatedItem((prevItem) => ({
       ...prevItem,
       [name]: type === "checkbox" ? String(checked) : e.target.value,
     }));
-
   };
 
-  //  const handleUpdate = () => {
-  //    onUpdate(updatedItem); // Send updated item to parent component
-  //    onClose(); // Close the popup
-  //    setUpdatedItem((prevItem) => [...prevItem, updatedItem]);
-  //  };
+  const handleUpdate = () => {
+    onUpdate(updatedItem); 
+    onClose(); 
+    setUpdatedItem((prevItem) => [...prevItem, updatedItem]);
 
-
+    toast.success('Data inserted successfully!', {
+      position: 'top-right',
+  });
+  };
 
   return (
     <div>
@@ -38,31 +38,46 @@ const ButtonPopup = ({ item, onClose }) => {
               </IconButton>
             </div>
             <div style={popupContentStyles}>
-              {console.log(item)}
-
-              {/* <input
-                type="checkbox"
-                id={`${language.toLowerCase()}_complete`}
-                name={`${language.toLowerCase()}_complete`}
-                checked={formData[`${language.toLowerCase()}_complete`]}
-                onChange={handleChange}
-              />
-              <label htmlFor={`${language.toLowerCase()}_complete`}>Complete</label> */}
-
-              <h3>{item.title}</h3>
-              <p>Complete: {item.isComplete ? "Yes" : "No"}</p>
-              <p>Published: {item.isPublished ? "Yes" : "No"}</p>
               <div>
-                <label htmlFor="file_link">File Link</label>
+                <label htmlFor={`${selectedLanguage.toLowerCase()}_complete`}>1.{selectedLanguage}</label>
+      
+                <br />  
+                <input
+                  type="checkbox"
+                  id={`${selectedLanguage.toLowerCase()}_complete`}
+                  name={`${selectedLanguage.toLowerCase()}_complete`}
+                  onChange={handleChange}
+                  checked={JSON.parse(updatedItem[`${selectedLanguage.toLowerCase()}_complete`]) === true}
+                />
+                 
+                <label htmlFor={`${selectedLanguage.toLowerCase()}_complete`}>Complete</label>
+
+                <input
+                  type="checkbox"
+                  id={`${selectedLanguage.toLowerCase()}_published`}
+                  name={`${selectedLanguage.toLowerCase()}_published`}
+                  onChange={handleChange}
+                  checked={JSON.parse(updatedItem[`${selectedLanguage.toLowerCase()}_published`]) === true}
+                />
+                <label htmlFor={`${selectedLanguage.toLowerCase()}_published`}>Published</label>
+                <br />
+              </div>
+              <div>
+                <label htmlFor={`${selectedLanguage.toLowerCase()}_link`}>{selectedLanguage} Link </label>
                 <input
                   type="text"
-                  id="file_link"
-                  name="file_link"
+                  id={`${selectedLanguage.toLowerCase()}_link`}
+                  name={`${selectedLanguage.toLowerCase()}_link`}
                   onChange={handleChange}
+                  value={updatedItem[`${selectedLanguage.toLowerCase()}_link`]}
                 />
               </div>
             </div>
 
+            <div className="btn-box">
+              <button onClick={handleUpdate}>Update</button>
+              <button onClick={onClose}>Close</button>
+            </div>
           </div>
         </div>
       </>
@@ -87,8 +102,7 @@ const popupContentStyles = {
   backgroundColor: "white",
   borderRadius: "10px",
   textAlign: "left",
-  width: "500px",
-  height: "400px",
+  width: "350px",
   overflowY: "scroll",
 };
 

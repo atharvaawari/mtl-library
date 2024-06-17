@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import "../Popup.css";
 import IconButton from "@mui/material/IconButton";
+import { toast } from "react-hot-toast";
 
-const UpdatePopup = ({ item, onClose, onUpdate, colsSet, selectedCategory }) => {
+const UpdatePopup = ({ item, onClose, onUpdate, colsSet }) => {
 
 
   // State to hold the updated item
@@ -16,14 +17,16 @@ const UpdatePopup = ({ item, onClose, onUpdate, colsSet, selectedCategory }) => 
       ...prevItem,
       [name]: type === "checkbox" ? String(checked) : e.target.value,
     }));
-
-    
   };
 
   const handleUpdate = () => {
     onUpdate(updatedItem); // Send updated item to parent component
     onClose(); // Close the popup
     setUpdatedItem((prevItem) => [...prevItem, updatedItem]);
+
+    toast.success('Data inserted successfully!', {
+      position: 'top-right',
+    });
   };
 
   return (

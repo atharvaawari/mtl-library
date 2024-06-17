@@ -12,7 +12,7 @@ import "../../FormComponent.css";
 import AddPopup from "../globalComponents/AddPopup";
 import UpdateChild from "../globalComponents/UpdatePopup";
 import ButtonPopup from '../globalComponents/ButtonPopup';
-import { toast, Toaster } from "react-hot-toast";
+import { Toaster } from "react-hot-toast";
 
 const GameDataDisplay = React.memo(({ colsSet, selectedCategory }) => {
   const [tableData, setTableData] = useState([]);
@@ -20,6 +20,7 @@ const GameDataDisplay = React.memo(({ colsSet, selectedCategory }) => {
   const [showUpdatePopup, setShowUpdatePopup] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
   const [showButtonPopup, setShowButtonPopup] = useState(false);
+  const [selectLanguage, setSelectedLanguage] = useState(null);
 
   const fetchTableData = async (tablename) => {
     try {
@@ -38,23 +39,23 @@ const GameDataDisplay = React.memo(({ colsSet, selectedCategory }) => {
     fetchTableData('game_video');
   }, [selectedCategory]);
 
-  const toggleButtonPopup = () => {
-    setShowButtonPopup(!showButtonPopup);
-  };
-
-
-
-  const handleButtonPopup = (item) => {
-    toggleButtonPopup()
-    setSelectedItem(item);
-
-  };
+  
 
   const addData = (newData) => {
     const newEntry = { id: tableData.length + 1, ...newData };
     setTableData([...tableData, newEntry]);
   };
 
+  const toggleButtonPopup = () => {
+    setShowButtonPopup(!showButtonPopup);
+  };
+
+  const handleButtonPopup = (language, item) => {
+    toggleButtonPopup()
+    setSelectedLanguage(language);
+    setSelectedItem(item);
+  };
+  
   const toggleAddPopup = () => {
     setAddPopup(!addPopup);
   };
@@ -84,9 +85,7 @@ const GameDataDisplay = React.memo(({ colsSet, selectedCategory }) => {
       });
 
       if (response.ok) {
-        toast.success("Data updated successfully!", {
-          position: "top-right",
-        });
+        console.log("Form submit Sucessfully...");
       } else {
         console.error("Failed to submit form");
       }
@@ -137,7 +136,7 @@ const GameDataDisplay = React.memo(({ colsSet, selectedCategory }) => {
           <Table>
             <TableHead>
               <TableRow>
-              <TableCell>ID</TableCell>
+                <TableCell>ID</TableCell>
                 <TableCell>Title</TableCell>
                 <TableCell>Action</TableCell>
                 {colsSet.map((language, index) => (
@@ -148,7 +147,7 @@ const GameDataDisplay = React.memo(({ colsSet, selectedCategory }) => {
               </TableRow>
             </TableHead>
             <TableBody>
-            {reversedTableData.map((item, idx) => (
+              {reversedTableData.map((item, idx) => (
                 <TableRow key={idx}>
                   <TableCell>{idx + 1}</TableCell>
                   <TableCell>{item.title}</TableCell>
@@ -164,19 +163,16 @@ const GameDataDisplay = React.memo(({ colsSet, selectedCategory }) => {
                   {colsSet.map((language, index) => {
                     const publishedKey = `${language.toLowerCase()}_published`;
                     const completeKey = `${language.toLowerCase()}_complete`;
+                    const isPublished = item[publishedKey] ? JSON.parse(item[publishedKey]) : false;
+                    const isComplete = item[completeKey] ? JSON.parse(item[completeKey]) : false;
                     return (
                       <TableCell className="btn-container" key={index}>
                         <Button
+                          onClick={() => handleButtonPopup(language, item)}
                           variant="contained"
-                          className={getStatusClass(
-                            JSON.parse(item[publishedKey]),
-                            JSON.parse(item[completeKey])
-                          )}
+                          className={getStatusClass(isPublished, isComplete)}
                         >
-                          {getStatusLabel(
-                            JSON.parse(item[publishedKey]),
-                            JSON.parse(item[completeKey])
-                          )}
+                          {getStatusLabel(isPublished, isComplete)}
                         </Button>
                       </TableCell>
                     );
@@ -198,13 +194,14 @@ const GameDataDisplay = React.memo(({ colsSet, selectedCategory }) => {
         </TableContainer>
       </div>
 
-      {showButtonPopup && (
-        <ButtonPopup onClose={toggleButtonPopup} colsSet={colsSet} item={selectedItem} onUpdate={submitUpdate} selectedCategory={selectedCategory} />
-      )}
-
       {showUpdatePopup && selectedItem && (
         <UpdateChild colsSet={colsSet} item={selectedItem} onClose={closeUpdate} onUpdate={submitUpdate} selectedCategory={selectedCategory} />
       )}
+
+      {showButtonPopup && (
+        <ButtonPopup onClose={toggleButtonPopup} item={selectedItem} selectedLanguage={selectLanguage} onUpdate={submitUpdate} />
+      )}
+
       <Toaster position="top-right" />
     </>
   );

@@ -18,6 +18,7 @@ import AddChildPopup from "./AddChildPopup";
 import ContentHub from "./ContentChildSection";
 import { toast, Toaster } from "react-hot-toast";
 import './DataDisplay.css';
+import ButtonPopup from "./globalComponents/ButtonPopup";
 
 const DataDisplay = React.memo(({ colsSet, selectedCategory }) => {
 
@@ -27,12 +28,10 @@ const DataDisplay = React.memo(({ colsSet, selectedCategory }) => {
   const [tableData, setTableData] = useState([]);
   const [nestedData, setNestedData] = useState(null);
   const [addPopUp, setAddPopUp] = useState(false);
+  const [showButtonPopup, setShowButtonPopup] = useState(false);
+  const [selectLanguage, setSelectedLanguage] = useState(null);
 
 
-  const toggleAddPopUp = () => {
-    setAddPopUp(!addPopUp)
-
-  }
 
   const fetchTableData = async (tablename) => {
     try {
@@ -52,6 +51,21 @@ const DataDisplay = React.memo(({ colsSet, selectedCategory }) => {
 
   }, [selectedCategory, currentItemId]);
 
+
+  const toggleButtonPopup = () => {
+    setShowButtonPopup(!showButtonPopup);
+  };
+
+  const handleButtonPopup = (language, item) => {
+    toggleButtonPopup()
+    setSelectedLanguage(language);
+    setSelectedItem(item);
+  };
+
+  const toggleAddPopUp = () => {
+    setAddPopUp(!addPopUp)
+
+  }
 
   const openUpdate = (item) => {
     setSelectedItem(item);
@@ -93,6 +107,7 @@ const DataDisplay = React.memo(({ colsSet, selectedCategory }) => {
   };
 
   const handleUpdate = async (updatedData) => {
+
     const updatedArray = tableData.map((item) =>
       item.id === updatedData.id ? updatedData : item
     );
@@ -104,8 +119,11 @@ const DataDisplay = React.memo(({ colsSet, selectedCategory }) => {
         },
         body: JSON.stringify(updatedData),
       });
-
       if (response.ok) {
+        // toast.success("Data updated successfully!", {
+        //   position: "top-right",
+        // });
+        
         console.log("Form submitted successfully!");
       } else {
         console.error("Failed to submit form");
@@ -184,20 +202,14 @@ const DataDisplay = React.memo(({ colsSet, selectedCategory }) => {
                   <TableCell className="headding-item" style={{ minWidth: '170px', textAlign: "center" }}>Title</TableCell>
                   <TableCell className="headding-item">Action</TableCell>
                   <TableCell className="headding-item"></TableCell>
-                  <TableCell className="headding-item">Hindi</TableCell>
-                  <TableCell className="headding-item">English</TableCell>
-                  <TableCell className="headding-item">Bangla</TableCell>
-                  <TableCell className="headding-item">Telugu</TableCell>
-                  <TableCell className="headding-item">Tamil</TableCell>
-                  <TableCell className="headding-item">Malayalam</TableCell>
-                  <TableCell className="headding-item">Portuguese</TableCell>
-                  <TableCell className="headding-item">Spanish</TableCell>
-                  <TableCell className="headding-item">Kannada</TableCell>
-                  <TableCell className="headding-item">Odia</TableCell>
-                  <TableCell className="headding-item">Insta</TableCell>
-                  <TableCell className="headding-item">FB</TableCell>
+                  {colsSet.map((language, index) => (
+                    <TableCell
+                      className="headding-item"
+                      key={index}>
+                      {language.replace(/_/g, ' ')}
+                    </TableCell>
+                  ))}
                   <TableCell className="headding-item">File Link</TableCell>
-
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -237,6 +249,7 @@ const DataDisplay = React.memo(({ colsSet, selectedCategory }) => {
                         return (
                           <TableCell className="btn-container" key={index}>
                             <Button
+                              onClick={() => handleButtonPopup(language, item)}
                               variant="contained"
                               className={getStatusClass(
                                 JSON.parse(item[publishedKey]),
@@ -278,19 +291,31 @@ const DataDisplay = React.memo(({ colsSet, selectedCategory }) => {
               </TableBody>
             </Table>
           </TableContainer>
-          <Toaster position="top-right" />
+          
         </div>
       ))}
+
+      {showButtonPopup && (
+        <ButtonPopup 
+        onClose={toggleButtonPopup} 
+        item={selectedItem} 
+        selectedLanguage={selectLanguage} 
+        onUpdate={handleUpdate} 
+        selectedCategory={selectedCategory}
+        />
+      )}
 
       {showUpdate && selectedItem && (
         <Update
           item={selectedItem}
           onClose={closeUpdate}
           onUpdate={handleUpdate}
+          selectedCategory={selectedCategory}
         />
       )}
+      <Toaster position="top-right" />
     </>
-
+    
   );
 });
 

@@ -11,28 +11,40 @@ const Popup = ({ onClose, addData, selectedCategory }) => {
         channel: '',
         hindi_complete: false,
         hindi_published: false,
+        hindi_link: '',
         english_complete: false,
         english_published: false,
+        english_link: '',
         bangla_complete: false,
         bangla_published: false,
+        bangla_link: '',
         telugu_complete: false,
         telugu_published: false,
+        telugu_link: '',
         tamil_complete: false,
         tamil_published: false,
+        tamil_link: '',
         malayalam_complete: false,
         malayalam_published: false,
+        malayalam_link: '',
         portuguese_complete: false,
         portuguese_published: false,
+        portuguese_link: '',
         spanish_complete: false,
         spanish_published: false,
+        spanish_link: '',
         kannada_complete: false,
         kannada_published: false,
+        kannada_link: '',
         odia_complete: false,
         odia_published: false,
+        odia_link: '',
         insta_complete: false,
         insta_published: false,
+        insta_link: '',
         fb_complete: false,
         fb_published: false,
+        fb_link: '',
         file_link: ''
     });
 
@@ -56,7 +68,7 @@ const Popup = ({ onClose, addData, selectedCategory }) => {
                 body: JSON.stringify(formData)
                 
             });
-            console.log(formData)
+            console.log("formData",formData )
             if (response.ok) {
                 console.log('Form submitted successfully!');
                 addData(formData);
@@ -65,28 +77,40 @@ const Popup = ({ onClose, addData, selectedCategory }) => {
                     channel: '',
                     hindi_complete: false,
                     hindi_published: false,
+                    hindi_link: '',
                     english_complete: false,
                     english_published: false,
+                    english_link: '',
                     bangla_complete: false,
                     bangla_published: false,
+                    bangla_link: '',
                     telugu_complete: false,
                     telugu_published: false,
+                    telugu_link: '',
                     tamil_complete: false,
                     tamil_published: false,
+                    tamil_link: '',
                     malayalam_complete: false,
                     malayalam_published: false,
+                    malayalam_link: '',
                     portuguese_complete: false,
                     portuguese_published: false,
+                    portuguese_link: '',
                     spanish_complete: false,
                     spanish_published: false,
+                    spanish_link: '',
                     kannada_complete: false,
                     kannada_published: false,
+                    kannada_link: '',
                     odia_complete: false,
                     odia_published: false,
+                    odia_link: '',
                     insta_complete: false,
                     insta_published: false,
+                    insta_link: '',
                     fb_complete: false,
                     fb_published: false,
+                    fb_link: '',
                     file_link: ' '
                 });
 
@@ -147,6 +171,19 @@ const Popup = ({ onClose, addData, selectedCategory }) => {
                                 />
                                 <label htmlFor={`${language.toLowerCase()}_published`}>Published</label>
                                 <br />
+
+                                <label htmlFor={`${language.toLowerCase()}_complete`}>Complete</label>
+                                <br />
+                                <label htmlFor={`${language.toLowerCase()}_link`}>{`${language.toLowerCase()} link`}</label>
+<input
+    id={`${language.toLowerCase()}_link`}
+    name={`${language.toLowerCase()}_link`}
+    checked={formData[`${language.toLowerCase()}_link`]}
+    onChange={handleChange}
+
+/>
+
+<br />
                             </div>
                         ))}
                         <div>
@@ -156,7 +193,6 @@ const Popup = ({ onClose, addData, selectedCategory }) => {
                                 id="file_link"
                                 name="file_link"
                                 onChange={handleChange}
-                                required
                             />
                         </div>
 

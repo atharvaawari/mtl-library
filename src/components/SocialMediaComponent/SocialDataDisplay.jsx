@@ -14,6 +14,8 @@ import { toast, Toaster } from "react-hot-toast";
 import "./SocialDataDisplay.css";
 import AddPopup from "../globalComponents/AddPopup";
 import UpdateChild from "../globalComponents/UpdatePopup";
+import ButtonPopup from '../globalComponents/ButtonPopup';
+
 
 const SocialDataDisplay = React.memo(({ colsSet, selectedCategory }) => {
 
@@ -21,7 +23,8 @@ const SocialDataDisplay = React.memo(({ colsSet, selectedCategory }) => {
   const [addPopup, setAddPopup] = useState(false);
   const [showUpdatePopup, setShowUpdatePopup] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
-
+  const [showButtonPopup, setShowButtonPopup] = useState(false);
+  const [selectLanguage, setSelectedLanguage] = useState(null);
 
   const fetchTableData = async (tablename) => {
     try {
@@ -47,6 +50,16 @@ const SocialDataDisplay = React.memo(({ colsSet, selectedCategory }) => {
     setTableData([...tableData, newEntry]);
   };
 
+  const toggleButtonPopup = () => {
+    setShowButtonPopup(!showButtonPopup);
+  };
+
+  const handleButtonPopup = (language, item) => {
+    toggleButtonPopup()
+    setSelectedLanguage(language);
+    setSelectedItem(item);
+  };
+
   const toggleAddPopup = () => {
     setAddPopup(!addPopup);
   };
@@ -60,8 +73,6 @@ const SocialDataDisplay = React.memo(({ colsSet, selectedCategory }) => {
     setSelectedItem(item);
     setShowUpdatePopup(true);
   };
-
-
 
   const handleUpdate = async (updatedData) => {
     const updatedArray = tableData.map((item) =>
@@ -79,9 +90,6 @@ const SocialDataDisplay = React.memo(({ colsSet, selectedCategory }) => {
 
       if (response.ok) {
         console.log("Form submitted successfully!");
-        toast.success("Data updated successfully!", {
-          position: "top-right",
-        });
       } else {
         console.error("Failed to submit form");
       }
@@ -92,6 +100,7 @@ const SocialDataDisplay = React.memo(({ colsSet, selectedCategory }) => {
     setTableData(updatedArray);
     closeUpdate();
   };
+
 
   const reversedTableData = [...tableData].reverse();
 
@@ -107,39 +116,6 @@ const SocialDataDisplay = React.memo(({ colsSet, selectedCategory }) => {
     return '-';
   };
 
-  // const statusFields = [
-  //   {
-  //     key: 'mehul_insta',
-  //     languages: [
-  //       { key: 'mehul_insta_published', completeKey: 'mehul_insta_complete' },
-  //     ]
-  //   },
-  //   {
-  //     key: 'myl_insta',
-  //     languages: [
-  //       { key: 'myl_insta_hindi_published', completeKey: 'myl_insta_hindi_complete', label: 'Hindi' },
-  //       { key: 'myl_insta_english_published', completeKey: 'myl_insta_english_complete', label: 'English' },
-  //     ]
-  //   },
-  //   {
-  //     key: 'myl_fb',
-  //     languages: [
-  //       { key: 'myl_fb_published', completeKey: 'myl_fb_complete' },
-  //     ]
-  //   },
-  // ];
-
-  // const getStatusClass = (published, complete) => {
-  //   if (published && complete) return 'success';
-  //   if (complete) return 'error';
-  //   return 'grey';
-  // };
-
-  // const getStatusLabel = (published, complete) => {
-  //   if (published && complete) return 'P';
-  //   if (complete) return 'C';
-  //   return '-';
-  // };
 
   return (
     <>
@@ -166,7 +142,7 @@ const SocialDataDisplay = React.memo(({ colsSet, selectedCategory }) => {
           <Table>
             <TableHead>
               <TableRow>
-              <TableCell>ID</TableCell>
+                <TableCell>ID</TableCell>
                 <TableCell>Title</TableCell>
                 <TableCell>Action</TableCell>
                 {colsSet.map((language, index) => (
@@ -193,19 +169,16 @@ const SocialDataDisplay = React.memo(({ colsSet, selectedCategory }) => {
                   {colsSet.map((language, index) => {
                     const publishedKey = `${language.toLowerCase()}_published`;
                     const completeKey = `${language.toLowerCase()}_complete`;
+                    const isPublished = item[publishedKey] ? JSON.parse(item[publishedKey]) : false;
+                    const isComplete = item[completeKey] ? JSON.parse(item[completeKey]) : false;
                     return (
                       <TableCell className="btn-container" key={index}>
                         <Button
+                          onClick={() => handleButtonPopup(language, item)}
                           variant="contained"
-                          className={getStatusClass(
-                            JSON.parse(item[publishedKey]),
-                            JSON.parse(item[completeKey])
-                          )}
+                          className={getStatusClass(isPublished, isComplete)}
                         >
-                          {getStatusLabel(
-                            JSON.parse(item[publishedKey]),
-                            JSON.parse(item[completeKey])
-                          )}
+                          {getStatusLabel(isPublished, isComplete)}
                         </Button>
                       </TableCell>
                     );
@@ -229,6 +202,10 @@ const SocialDataDisplay = React.memo(({ colsSet, selectedCategory }) => {
 
       {showUpdatePopup && selectedItem && (
         <UpdateChild colsSet={colsSet} item={selectedItem} onClose={closeUpdate} onUpdate={handleUpdate} selectedCategory={selectedCategory} />
+      )}
+
+      {showButtonPopup && (
+        <ButtonPopup onClose={toggleButtonPopup} item={selectedItem} selectedLanguage={selectLanguage} onUpdate={handleUpdate} />
       )}
       <Toaster position="top-right" />
 
