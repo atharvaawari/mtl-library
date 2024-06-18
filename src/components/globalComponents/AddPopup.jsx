@@ -36,7 +36,7 @@ const AddPopup = ({ onClose, addData, selectedCategory, colsSet }) => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log("formData", formData);
+
         try {
             const response = await fetch('http://localhost:3001/submit', {
                 method: 'POST',
@@ -47,9 +47,22 @@ const AddPopup = ({ onClose, addData, selectedCategory, colsSet }) => {
             });
 
             if (response.ok) {
-                console.log('Form submitted successfully!');
-                addData(formData);
+                response.json().then(data => {
+                    // Access inserted ID
+                    const insertId = data.submitedData.insertId;
+                    formData.id = insertId;
+                    addData(formData);
+                    // console.log("formData", formData)
+                    console.log("formData.id:", formData.id);
+                    console.log("insertId:", insertId);
+                }).catch(error => {
+                    console.error("Error parsing JSON:", error);
+                });
 
+                console.log('Form submitted successfully!');
+                
+
+                
                 toast.success('Data inserted successfully!', {
                     position: 'top-right',
                 });

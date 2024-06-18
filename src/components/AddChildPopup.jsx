@@ -56,6 +56,46 @@ const AddChildPopup = ({ onClose, addChildData, parent_id, incChildCount }) => {
             });
 
             if (response.ok) {
+
+                response.json().then(data => {
+                    // Access inserted ID
+                    const insertId = data.submitedData.insertId;
+                    
+                    formData.id = insertId;
+                    addChildData(formData);
+                    setFormData({
+                        title: '',
+                        hindi_complete: false,
+                        hindi_published: false,
+                        english_complete: false,
+                        english_published: false,
+                        bangla_complete: false,
+                        bangla_published: false,
+                        telugu_complete: false,
+                        telugu_published: false,
+                        tamil_complete: false,
+                        tamil_published: false,
+                        malayalam_complete: false,
+                        malayalam_published: false,
+                        portuguese_complete: false,
+                        portuguese_published: false,
+                        spanish_complete: false,
+                        spanish_published: false,
+                        kannada_complete: false,
+                        kannada_published: false,
+                        odia_complete: false,
+                        odia_published: false,
+                        insta_complete: false,
+                        insta_published : false,
+                        fb_complete: false,
+                        fb_published: false,
+                    });
+
+                    console.log("formData.id:", formData.id);
+                }).catch(error => {
+                    console.error("Error parsing JSON:", error);
+                });
+                
                 console.log('Form submitted successfully!');
               
                 setFormData({
@@ -85,8 +125,8 @@ const AddChildPopup = ({ onClose, addChildData, parent_id, incChildCount }) => {
                     fb_complete: false,
                     fb_published: false,
                 });
-                addChildData(formData)
-                incChildCount(parent_id)
+                
+                incChildCount(parent_id);
 
                 toast.success(`Data inserted successfully for ${formData.title}`, {
                     position: 'top-right',

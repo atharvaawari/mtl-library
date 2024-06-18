@@ -10,7 +10,6 @@ import {
   Button,
   Collapse,
   Box,
-  TextField,
 } from "@mui/material";
 import Update from "./Update";
 import Popup from "./Popup";
@@ -36,9 +35,7 @@ const DataDisplay = React.memo(({ colsSet, selectedCategory }) => {
     const updatedArray = tableData.map((item) =>
       item.id === id ? { ...item, child_count: item.child_count + 1 } : item
     );
-
     setTableData(updatedArray);
-    console.log("tableData", tableData)
   };
 
   const fetchTableData = async (tablename) => {
@@ -157,9 +154,9 @@ const DataDisplay = React.memo(({ colsSet, selectedCategory }) => {
   const addData = (newData) => {
     const newEntry = { id: tableData[tableData.length - 1].id + 1, ...newData };
     setTableData([...tableData, newEntry]);
-    console.log(newEntry.id)
-    console.log(selectedItem)
-  };
+    
+    };
+ 
 
   const getStatusClass = (published, complete) => {
     if (published && complete) return 'success';

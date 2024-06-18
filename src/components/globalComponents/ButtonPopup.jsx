@@ -7,24 +7,26 @@ import { toast, Toaster } from "react-hot-toast";
 const ButtonPopup = ({ item, selectedLanguage, onClose, onUpdate }) => {
 
   const [updatedItem, setUpdatedItem] = useState(item);
+  
 
   const handleChange = (e) => {
     const { name, type, checked } = e.target;
 
     setUpdatedItem((prevItem) => ({
       ...prevItem,
-      [name]: type === "checkbox" ? String(checked) : e.target.value,
+      [name]: type === "checkbox" ? String(checked) :  e.target.value,
     }));
   };
 
   const handleUpdate = () => {
-    onUpdate(updatedItem); 
-    onClose(); 
+    onUpdate(updatedItem);
+    onClose();
     setUpdatedItem((prevItem) => [...prevItem, updatedItem]);
 
     toast.success('Data inserted successfully!', {
       position: 'top-right',
-  });
+    });
+
   };
 
   return (
@@ -40,8 +42,8 @@ const ButtonPopup = ({ item, selectedLanguage, onClose, onUpdate }) => {
             <div style={popupContentStyles}>
               <div>
                 <label htmlFor={`${selectedLanguage.toLowerCase()}_complete`}>1.{selectedLanguage}</label>
-      
-                <br />  
+
+                <br />
                 <input
                   type="checkbox"
                   id={`${selectedLanguage.toLowerCase()}_complete`}
@@ -49,13 +51,13 @@ const ButtonPopup = ({ item, selectedLanguage, onClose, onUpdate }) => {
                   onChange={handleChange}
                   checked={JSON.parse(updatedItem[`${selectedLanguage.toLowerCase()}_complete`]) === true}
                 />
-                 
+
                 <label htmlFor={`${selectedLanguage.toLowerCase()}_complete`}>Complete</label>
 
                 <input
                   type="checkbox"
                   id={`${selectedLanguage.toLowerCase()}_published`}
-                  name={`${selectedLanguage.toLowerCase()}_published` }
+                  name={`${selectedLanguage.toLowerCase()}_published`}
                   onChange={handleChange}
                   checked={JSON.parse(updatedItem[`${selectedLanguage.toLowerCase()}_published`]) === true}
                 />
