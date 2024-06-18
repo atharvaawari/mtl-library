@@ -13,11 +13,11 @@
   import AddChildPopup from "./AddChildPopup";
 
 
-  const ContentHub = ({ nestedData, currentItemId }) => {
+  const ContentHub = ({ nestedData, currentItemId, incChildCount }) => {
 
     const [showUpdate, setShowUpdate] = useState(false);
     const [selectedItem, setSelectedItem] = useState(null);
-    const [tableData, setTableData] = useState([]);
+    const [childTableData, setChildTableData] = useState([]);
     const [isPopupOpen, setIsPopupOpen] = useState(false);
 
 
@@ -27,32 +27,30 @@
 
   
     const addChildData = (newData) => {
-      setTableData((prevTableData) => {
-        const newEntry = { id: prevTableData[prevTableData.length - 1].id + 1, ...newData };
-        
-        return [...prevTableData, newEntry];
-      });
+      if(nestedData.length>0){
+        setChildTableData((prevTableData) => {
+          const newEntry = { id: prevTableData[prevTableData.length - 1].id + 1, ...newData };
+          return [...prevTableData, newEntry];
+        });
+      }else{
+        setChildTableData((prevTableData) => {
+          const newEntry = { id: 1, ...newData };
+          console.log("currentItemId", newData)
+          return [newEntry];
+        });
+      }
     };
 
-  //   const addChildData = (newData) => {
-  //     setTableData((prevTableData) => {
-  //         const newEntry = { id: prevTableData.length + 1, ...newData };
-  //         console.log("setTableData", [...prevTableData, newEntry]);
-  //         console.log("newEntry", newEntry);
-  //         return [...prevTableData, newEntry];
-  //     });
-  // };
-
-    const incChildCount = async (id) => {
-      setTableData((prevTableData) =>
-        prevTableData.map((item) =>
-          item.id === id ? { ...item, child_count: item.child_count + 1 } : item
-        )
-      );
-    };
+    // const incChildCount = async (id) => {
+    //  setTableData((prevTableData) =>
+    //     prevTableData.map((item) => 
+    //       item.id === id ? { ...item, child_count: item.child_count + 1 } : item
+    //     )
+    //   );
+    //   console.log("tableData", tableData)
+    // };
 
     
-
     const openUpdate = (currentItemId) => {
       setSelectedItem(currentItemId);
       setShowUpdate(true);
@@ -64,7 +62,7 @@
     };
 
     const handleUpdate = async (updatedData) => {
-      const updatedArray = tableData.map((item) =>
+      const updatedArray = childTableData.map((item) =>
         item.id === updatedData.id ? updatedData : item
       );
 
@@ -89,18 +87,18 @@
         console.error("Error submitting form:", error);
       }
 
-      setTableData(updatedArray);
+      setChildTableData(updatedArray);
       closeUpdate();
     };
 
     useEffect(() => {
-      setTableData(nestedData);
+      setChildTableData(nestedData);
       console.log("nestedData", nestedData)
     }, [nestedData]);
 
     return (
       <div >
-        {tableData && (
+        {childTableData && (
 
           <>
 
@@ -118,8 +116,8 @@
                 <TableRow >
                   {/* Add more table headers as needed */}
 
-                  <TableCell >Title</TableCell>
                   <TableCell >ID</TableCell>
+                  <TableCell >Title</TableCell>
                   <TableCell >Action</TableCell>
                   <TableCell >Hindi</TableCell>
                   <TableCell >English</TableCell>
@@ -137,7 +135,7 @@
                 </TableRow>
               </TableHead>
               <TableBody>
-                {tableData.map((nestedVideo) => (
+                {childTableData.map((nestedVideo) => (
                   <TableRow key={nestedVideo.id}>
                     <TableCell>{nestedVideo.id}</TableCell>
                     <TableCell>{nestedVideo.title}</TableCell>
@@ -423,7 +421,7 @@
             parent_id={currentItemId}
             incChildCount={incChildCount}
           />
-        )}
+          )}
       </div>
     );
   };

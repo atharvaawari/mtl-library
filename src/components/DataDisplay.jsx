@@ -14,7 +14,6 @@ import {
 } from "@mui/material";
 import Update from "./Update";
 import Popup from "./Popup";
-import AddChildPopup from "./AddChildPopup";
 import ContentHub from "./ContentChildSection";
 import { toast, Toaster } from "react-hot-toast";
 import './DataDisplay.css';
@@ -33,6 +32,15 @@ const DataDisplay = React.memo(({ colsSet, selectedCategory }) => {
 
 
 
+  const incChildCount = async (id) => {
+    const updatedArray = tableData.map((item) =>
+      item.id === id ? { ...item, child_count: item.child_count + 1 } : item
+    );
+
+    setTableData(updatedArray);
+    console.log("tableData", tableData)
+  };
+
   const fetchTableData = async (tablename) => {
     try {
       const url = `http://localhost:3001/content-data?category=${selectedCategory}&tablename=${tablename}`;
@@ -49,7 +57,7 @@ const DataDisplay = React.memo(({ colsSet, selectedCategory }) => {
   useEffect(() => {
     fetchTableData('content_house');
 
-  }, [selectedCategory, currentItemId]);
+  }, [selectedCategory]);
 
 
   const toggleButtonPopup = () => {
@@ -64,7 +72,6 @@ const DataDisplay = React.memo(({ colsSet, selectedCategory }) => {
 
   const toggleAddPopUp = () => {
     setAddPopUp(!addPopUp)
-
   }
 
   const openUpdate = (item) => {
@@ -93,8 +100,8 @@ const DataDisplay = React.memo(({ colsSet, selectedCategory }) => {
         if (response.ok) {
           data = await response.json();
 
+          setCurrentItemId(itemId)
           setNestedData(data);
-          
         } else {
           console.error("Failed to fetch nested data");
         }
@@ -121,9 +128,6 @@ const DataDisplay = React.memo(({ colsSet, selectedCategory }) => {
         body: JSON.stringify(updatedData),
       });
       if (response.ok) {
-        // toast.success("Data updated successfully!", {
-        //   position: "top-right",
-        // });
 
         console.log("Form submitted successfully!");
       } else {
@@ -136,7 +140,6 @@ const DataDisplay = React.memo(({ colsSet, selectedCategory }) => {
     setTableData(updatedArray);
     closeUpdate();
   };
-
 
 
   const groupedData = tableData.reduce((acc, curr) => {
@@ -154,7 +157,6 @@ const DataDisplay = React.memo(({ colsSet, selectedCategory }) => {
   const addData = (newData) => {
     const newEntry = { id: tableData[tableData.length - 1].id + 1, ...newData };
     setTableData([...tableData, newEntry]);
-    setCurrentItemId(newEntry.id)
     console.log(newEntry.id)
     console.log(selectedItem)
   };
@@ -233,7 +235,7 @@ const DataDisplay = React.memo(({ colsSet, selectedCategory }) => {
                           variant="contained"
                           onClick={() => handleExpandClick(idx, item.id)}>
                           {expandedRow === idx ? "Collapse" : "Expand"}
-                          { }
+
                           {
                             item.child_count > 0
                               ? <span className="red-batch">{item.child_count}</span>
@@ -276,7 +278,7 @@ const DataDisplay = React.memo(({ colsSet, selectedCategory }) => {
                           timeout="auto"
                           unmountOnExit>
                           <Box margin={1}>
-                            <ContentHub nestedData={nestedData} currentItemId={item.id} />
+                            <ContentHub nestedData={nestedData} currentItemId={currentItemId} incChildCount={incChildCount} />
                           </Box>
                         </Collapse>
                       </TableCell>

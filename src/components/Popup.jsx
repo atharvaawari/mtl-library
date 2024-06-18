@@ -66,7 +66,7 @@ const Popup = ({ onClose, addData, selectedCategory }) => {
                 body: JSON.stringify(formData)
 
             });
-            console.log("formData", formData)
+            
             if (response.ok) {
                 console.log('Form submitted successfully!');
                 addData(formData);
