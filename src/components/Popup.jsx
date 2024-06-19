@@ -113,7 +113,7 @@ const Popup = ({ onClose, addData, selectedCategory }) => {
                         fb_complete: false,
                         fb_published: false,
                         fb_link: '',
-                        file_link: ' '
+                        file_link: ''
                     });
 
                     console.log("formData.id:", formData.id);
@@ -121,10 +121,6 @@ const Popup = ({ onClose, addData, selectedCategory }) => {
                     console.error("Error parsing JSON:", error);
                 });
                 console.log('Form submitted successfully!');
-                
-               
-
-                
 
                 toast.success('Data inserted successfully!', {
                     position: 'top-right',
