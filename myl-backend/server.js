@@ -12,11 +12,6 @@ app.use(cors());
 app.use(express.json());
 app.use(bodyParser.json());
 
-PORT = process.env.PORT || 3000
-
-app.listen(PORT, function () {
-  console.log(`Server is listening at ${PORT}`);
-})
 
 
 const executeDynamicSQLByTable = (SQLQUERY) => {
