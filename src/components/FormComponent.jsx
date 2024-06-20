@@ -44,12 +44,6 @@ const FormComponent = () => {
     }
   }
 
-
-
-
-
-
-
   const handleCategoryChange = (e) => {
     const category = e.target.value;
     if (category) {

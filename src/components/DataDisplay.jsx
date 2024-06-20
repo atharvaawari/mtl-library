@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import {
   Table,
   TableBody,
@@ -15,7 +15,7 @@ import {
 import Update from "./Update";
 import Popup from "./Popup";
 import ContentHub from "./ContentChildSection";
-import { toast, Toaster } from "react-hot-toast";
+import { Toaster } from "react-hot-toast";
 import './DataDisplay.css';
 import ButtonPopup from "./globalComponents/ButtonPopup";
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
@@ -40,7 +40,7 @@ const DataDisplay = React.memo(({ colsSet, selectedCategory }) => {
     setTableData(updatedArray);
   };
 
-  const fetchTableData = async (tablename) => {
+  const fetchTableData = useCallback( async (tablename) => {
     try {
       const url = `http://localhost:3001/content-data?category=${selectedCategory}&tablename=${tablename}`;
 
@@ -51,12 +51,12 @@ const DataDisplay = React.memo(({ colsSet, selectedCategory }) => {
     } catch (error) {
       console.error('Error fetching data:', error);
     }
-  };
+  }, [selectedCategory]);
 
   useEffect(() => {
     fetchTableData('content_house');
 
-  }, [selectedCategory]);
+  }, [selectedCategory, fetchTableData]);
 
 
   const toggleButtonPopup = () => {

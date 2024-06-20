@@ -7,7 +7,6 @@ import { toast } from "react-hot-toast";
 const ButtonPopup = ({ item, selectedLanguage, onClose, onUpdate }) => {
 
   const [updatedItem, setUpdatedItem] = useState(item);
-  
 
   const handleChange = (e) => {
     const { name, type, checked } = e.target;

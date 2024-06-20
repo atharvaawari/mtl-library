@@ -1,5 +1,5 @@
 import React from 'react'
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import {
   Table,
   TableBody,
@@ -28,7 +28,7 @@ const SocialDataDisplay = React.memo(({ colsSet, selectedCategory }) => {
   const [showButtonPopup, setShowButtonPopup] = useState(false);
   const [selectLanguage, setSelectedLanguage] = useState(null);
 
-  const fetchTableData = async (tablename) => {
+  const fetchTableData = useCallback( async (tablename) => {
     try {
       const url = `http://localhost:3001/content-data?category=${selectedCategory}&tablename=${tablename}`;
 
@@ -39,12 +39,12 @@ const SocialDataDisplay = React.memo(({ colsSet, selectedCategory }) => {
     } catch (error) {
       console.error('Error fetching data:', error);
     }
-  };
+  }, [selectedCategory]);
 
 
   useEffect(() => {
     fetchTableData('insta_fb_content');
-  }, [selectedCategory]);
+  }, [selectedCategory, fetchTableData]);
 
 
   const addData = (newData) => {

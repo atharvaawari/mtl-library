@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import {
   Table,
   TableBody,
@@ -7,7 +7,7 @@ import {
   TableHead,
   TableRow,
   Button,
-  Link,
+  Link
 } from "@mui/material";
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import "../../FormComponent.css";
@@ -24,7 +24,7 @@ const GameDataDisplay = React.memo(({ colsSet, selectedCategory }) => {
   const [showButtonPopup, setShowButtonPopup] = useState(false);
   const [selectLanguage, setSelectedLanguage] = useState(null);
 
-  const fetchTableData = async (tablename) => {
+  const fetchTableData = useCallback( async (tablename) => {
     try {
       const url = `http://localhost:3001/content-data?category=${selectedCategory}&tablename=${tablename}`;
 
@@ -35,11 +35,11 @@ const GameDataDisplay = React.memo(({ colsSet, selectedCategory }) => {
     } catch (error) {
       console.error('Error fetching data:', error);
     }
-  };
-
-  useEffect(() => {
-    fetchTableData('game_video');
   }, [selectedCategory]);
+
+    useEffect(() => {
+      fetchTableData('game_video');
+    }, [selectedCategory, fetchTableData]);
 
 
 
@@ -77,13 +77,15 @@ const GameDataDisplay = React.memo(({ colsSet, selectedCategory }) => {
       item.id === updatedData.id ? updatedData : item
     );
 
+    // chaged
+    // const response = await fetch("http://localhost:3001/update-content"
     try {
-      const response = await fetch("http://localhost:3001/update-content", {
+      await fetch("http://localhost:3001/update-content", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(updatedData),
+        body: JSON.stringify(updatedData)
       });
 
     } catch (error) {
@@ -179,7 +181,7 @@ const GameDataDisplay = React.memo(({ colsSet, selectedCategory }) => {
                                   fontSize: '12px',
                                   fontWeight: '900',
                                   color: 'white',
-                                  '& .MuiSvgIcon-root': { fontSize: '12px' },
+                                  '& .MuiSvgIcon-root': { fontSize: '12px' }
                                 }}
                               >
                                 <OpenInNewIcon /></Link>
