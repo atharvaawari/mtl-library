@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "../FormComponent.css";
 import DataDisplay from "./DataDisplay";
 import GameDataDisplay from "./gameComponents/GameDataDisplay";
 import SocialDataDisplay from "./SocialMediaComponent/SocialDataDisplay";
+import Loader from "./Loader/Loader";
 import Navbar from "./Navbar";
 import {
   MenuItem,
@@ -15,6 +16,21 @@ const FormComponent = () => {
   const [data, setData] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState("");
   const [colsSet, setColsSet] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+
+
+  useEffect(() => {
+    // Simulate an API call
+    setTimeout(() => {
+      setLoading(false);
+    }, 1000); // 3 seconds delay
+  }, []);
+
+  if (loading) {
+    return <Loader />;
+  }
+
 
   const changePopupData = (category) => {
     fetch('http://localhost:3000/data/channel.json')
@@ -24,15 +40,21 @@ const FormComponent = () => {
       });
 
     if (!data) {
-      return <div>Loading...</div>;
+      return <div>..Loading</div>;
     }
   }
+
+
+
+
+
+
 
   const handleCategoryChange = (e) => {
     const category = e.target.value;
     if (category) {
-    setSelectedCategory(category) 
-    changePopupData(category)
+      setSelectedCategory(category)
+      changePopupData(category)
     }
   };
 
@@ -68,7 +90,7 @@ const FormComponent = () => {
       {selectedCategory === 'insta-fb-content' && (
         <SocialDataDisplay colsSet={colsSet} selectedCategory={selectedCategory} />
       )}
-      {selectedCategory === 'game-videos' &&  (
+      {selectedCategory === 'game-videos' && (
         <GameDataDisplay colsSet={colsSet} selectedCategory={selectedCategory} />
       )}
 

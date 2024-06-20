@@ -6,11 +6,13 @@
     TableCell,
     TableHead,
     TableRow,
-    Button
+    Button,
+    Link 
   } from "@mui/material";
   import UpdateChild from "./UpdateChild";
   import { toast } from "react-hot-toast";
   import AddChildPopup from "./AddChildPopup";
+  import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 
 
   const ContentHub = ({ nestedData, currentItemId, incChildCount }) => {
@@ -102,7 +104,7 @@
 
           <>
 
-            <div style={ {width:"100%", display: "flex", justifyContent:"center", padding:".7rem", }  }>
+            <div style={ {width:"100%", display: "flex", justifyContent:"center", padding:".7rem" }  }>
 
               <Button
                 variant="contained"
@@ -117,7 +119,7 @@
                   {/* Add more table headers as needed */}
 
                   <TableCell >ID</TableCell>
-                  <TableCell >Title</TableCell>
+                  <TableCell style={{ minWidth: '170px', textAlign: "center" }}>Title</TableCell>
                   <TableCell >Action</TableCell>
                   <TableCell >Hindi</TableCell>
                   <TableCell >English</TableCell>
@@ -165,6 +167,20 @@
                           : JSON.parse(nestedVideo.hindi_complete) === true
                             ? "C"
                             : "-"}
+
+{
+                            nestedVideo[nestedVideo.hindi_link]
+                              ? <Link href={nestedVideo[nestedVideo.hindi_link]} target="_blank" rel="noopener noreferrer" className="black-batch"
+                              sx={{
+                                fontSize: '12px', 
+                                fontWeight:'900',
+                                color: 'white',
+                                '& .MuiSvgIcon-root': { fontSize: '12px' }, 
+                              }}
+                        >
+                       <OpenInNewIcon /></Link>
+                              : ''
+                          }
                       </Button>
                     </TableCell>
 

@@ -69,64 +69,58 @@ const Popup = ({ onClose, addData, selectedCategory }) => {
 
             if (response.ok) {
 
-                response.json().then(data => {
-                    // Access inserted ID
-                    const insertId = data.submitedData.insertId;
-                    formData.id = insertId;
-                    addData(formData);
-                    setFormData({
-                        title: '',
-                        channel: '',
-                        hindi_complete: false,
-                        hindi_published: false,
-                        hindi_link: '',
-                        english_complete: false,
-                        english_published: false,
-                        english_link: '',
-                        bangla_complete: false,
-                        bangla_published: false,
-                        bangla_link: '',
-                        telugu_complete: false,
-                        telugu_published: false,
-                        telugu_link: '',
-                        tamil_complete: false,
-                        tamil_published: false,
-                        tamil_link: '',
-                        malayalam_complete: false,
-                        malayalam_published: false,
-                        malayalam_link: '',
-                        portuguese_complete: false,
-                        portuguese_published: false,
-                        portuguese_link: '',
-                        spanish_complete: false,
-                        spanish_published: false,
-                        spanish_link: '',
-                        kannada_complete: false,
-                        kannada_published: false,
-                        kannada_link: '',
-                        odia_complete: false,
-                        odia_published: false,
-                        odia_link: '',
-                        insta_complete: false,
-                        insta_published: false,
-                        insta_link: '',
-                        fb_complete: false,
-                        fb_published: false,
-                        fb_link: '',
-                        file_link: ''
-                    });
+                const data = await response.json();
+                formData.id = data.insertId;
+                addData(formData);
 
-                    console.log("formData.id:", formData.id);
-                }).catch(error => {
-                    console.error("Error parsing JSON:", error);
+                setFormData({
+                    title: '',
+                    channel: '',
+                    hindi_complete: false,
+                    hindi_published: false,
+                    hindi_link: '',
+                    english_complete: false,
+                    english_published: false,
+                    english_link: '',
+                    bangla_complete: false,
+                    bangla_published: false,
+                    bangla_link: '',
+                    telugu_complete: false,
+                    telugu_published: false,
+                    telugu_link: '',
+                    tamil_complete: false,
+                    tamil_published: false,
+                    tamil_link: '',
+                    malayalam_complete: false,
+                    malayalam_published: false,
+                    malayalam_link: '',
+                    portuguese_complete: false,
+                    portuguese_published: false,
+                    portuguese_link: '',
+                    spanish_complete: false,
+                    spanish_published: false,
+                    spanish_link: '',
+                    kannada_complete: false,
+                    kannada_published: false,
+                    kannada_link: '',
+                    odia_complete: false,
+                    odia_published: false,
+                    odia_link: '',
+                    insta_complete: false,
+                    insta_published: false,
+                    insta_link: '',
+                    fb_complete: false,
+                    fb_published: false,
+                    fb_link: '',
+                    file_link: ' '
                 });
-                console.log('Form submitted successfully!');
 
+                console.log("formData.id:", formData.id);
                 toast.success('Data inserted successfully!', {
                     position: 'top-right',
                 });
             } else {
-                console.error('Failed to submit form');
+                
             }
         } catch (error) {
             console.error('Error submitting form:', error);
@@ -181,16 +175,6 @@ const Popup = ({ onClose, addData, selectedCategory }) => {
                                 <br />
 
                                 <label htmlFor={`${language.toLowerCase()}_complete`}>Complete</label>
-                                <br />
-                                <label htmlFor={`${language.toLowerCase()}_link`}>{`${language.toLowerCase()} link`}</label>
-                                <input
-                                    id={`${language.toLowerCase()}_link`}
-                                    name={`${language.toLowerCase()}_link`}
-                                    checked={formData[`${language.toLowerCase()}_link`]}
-                                    onChange={handleChange}
-
-                                />
-
                                 <br />
                             </div>
                         ))}

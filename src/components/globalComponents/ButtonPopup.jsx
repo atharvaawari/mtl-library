@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import "../Popup.css";
 import IconButton from "@mui/material/IconButton";
-import { toast, Toaster } from "react-hot-toast";
+import { toast } from "react-hot-toast";
 
 
 const ButtonPopup = ({ item, selectedLanguage, onClose, onUpdate }) => {

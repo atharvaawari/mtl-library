@@ -1,31 +1,117 @@
-const express = require('express')
-const cors = require('cors');
-const connection = require('./app/config/db');
-const bodyParser = require('body-parser');
-
-require('dotenv').config()
-require('./app/config/db')
-
+const express = require("express");
+const bodyParser = require("body-parser");
+const cookieParser = require("cookie-parser");
+const session = require("express-session");
+const mariadb = require("mariadb");
+const ejs = require("ejs");
+const fs = require("fs");
+const path = require("path");
 const app = express();
+const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
+const cors = require('cors');
 
-app.use(cors());
+const {
+  emailinUserTable,
+  addLeaves,
+  getLeavsData,
+  getAllLeavsData,
+  updateJWTToken,
+  executeDynamicSQLByTable,
+  executeDynamicSQL,
+  removeLeaves,
+  pendingLeaves,
+} = require("./models/auth");
+
+const { groupedByEmail } = require("./controller/utils/groupedByEmail");
+const { checkLeaveStatus } = require("./controller/utils/getLeaveStatus");
+const { verifyAuth,verifyAuth1, isEmpEnabled } = require("./controller/utils/verify-cookies");
+const { weekYearData,moveItemsToBottom,getTarfetDoneCount } = require("./controller/utils/date-time");
+const {getIdeaInnovation} = require("./controller/ideas-innovation-controller");
+
+// Use EJS as templating engine
+app.set("view engine", "ejs");
+app.set("views", path.join(__dirname, "views"));
+app.use(cookieParser());
 app.use(express.json());
-app.use(bodyParser.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(cors()); 
+
+app.use(
+  session({
+    secret: "mySecretKey", // Use a strong secret key in production
+    resave: false,
+    saveUninitialized: true,
+    cookie: {
+      secure: false, // Set this to true if serving over HTTPS
+      maxAge: 24 * 60 * 60 * 1000, // 1 day in milliseconds
+    },
+  })
+);
+
+// Serve static files from the React app
+//app.use(express.static(path.join(__dirname, 'client/build')));
+app.use("/data", express.static("data"));
+app.use("/static", express.static("public"));
+app.use("/content-hub", express.static("client/build"));
+app.use(express.static("txt_file"));
+
+// _______ Routers __________
+
+const gameRouter = require("./routes/game-router");
+const authRouter = require("./routes/auth-router");
+const empRouter = require("./routes/emp-router");
+const leaveRouter = require("./routes/leave-router");
+const contentUploadsRouter = require("./routes/content-uploads-route");
+const ideasRouter = require("./routes/ideas-innovation-router");
+const testingRouter = require("./routes/testing-router");
+const attendanceRouter = require("./routes/attendance-router");
+
+app.use(authRouter);
+app.use(gameRouter);
+app.use(empRouter);
+app.use(leaveRouter);
+app.use(contentUploadsRouter);
+app.use(ideasRouter);
+app.use(testingRouter);
+app.use(attendanceRouter);
+
+// _______ Routers ___________
+
+app.get("/" ,async (req, res) => {
+  if (req.cookies.emp_login) {
+    return res.redirect("/home-page");
+  }
+
+  return res.redirect("/login");
+
+});
 
 
+app.get("/home-page",verifyAuth1, isEmpEnabled, async (req, res) => {
 
-const executeDynamicSQLByTable = (SQLQUERY) => {
-  return new Promise((resolve, reject) => {
-    connection.query(SQLQUERY, response = (err, rows) => {
-      if (err) {
-        reject(err);
-      } else {
-        resolve(rows);
-      }
-    });
-  });
-};
+  try {
 
+    if (req.cookies.emp_login) {
+      const email = verifyAuth(req.cookies.emp_login);
+      const adminData = await emailinUserTable(email);
+      const leaveStatuData = await checkLeaveStatus();
+  
+      return res.render("home-page", {
+        todayLeaveData: leaveStatuData.todayLeaveData,
+        tomorrowLeaveData: leaveStatuData.tomorrowLeaveData,
+        adminData:adminData[0]
+      });
+    }
+  
+     return res.redirect("/login");
+    
+  } catch (error) {
+    res.send(error)
+  }
+
+   
+});
 
 let category;
 let tableName;
@@ -146,14 +232,12 @@ app.post("/submit", async (req, res) => {
     `
       )
     }
-    
-    const insertId = Number(submitedData.insertId)
 
-    res.status(200).json({ insertId:insertId});
+    res.status(200).json({ message: 'success', submitedData:submitedData });
 
   } catch (error) {
-    console.error('Error sending data ---------------------:', error);
-    res.status(500).json({ error });
+    console.error('Error sending data:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
   }
 
 });
@@ -362,9 +446,7 @@ app.post("/submit-child",async (req,res) => {
 
 await executeDynamicSQLByTable(`UPDATE content_house SET child_count = child_count + 1 WHERE id = ${req.body.parent_id}`);
 
-    const insertId = Number(submitedData.insertId)
-
-    res.status(200).json({ insertId:insertId});
+res.status(200).json({ message: 'success', submitedData: submitedData });
       
   } catch (error) {
       console.error('Error sending data:', error);
@@ -373,7 +455,15 @@ await executeDynamicSQLByTable(`UPDATE content_house SET child_count = child_cou
 
 });
 
+
+// Serve static files from the 'client/build' directory
+app.use(express.static(path.join(__dirname, 'client/build')));
+
+// Catch-all handler to serve index.html for any other routes
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'client/build', 'index.html'));
+});
+
 app.listen(3001, () => {
   console.log("Server running on http://localhost:3001");
 });
-

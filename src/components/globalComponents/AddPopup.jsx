@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 
 import IconButton from '@mui/material/IconButton';
-import { toast, Toaster } from "react-hot-toast";
+import { toast} from "react-hot-toast";
 
 import '../Popup.css';
 
@@ -12,6 +12,7 @@ const AddPopup = ({ onClose, addData, selectedCategory, colsSet }) => {
         ...colsSet.reduce((acc, language) => {
             acc[`${language.toLowerCase().replaceAll(' ', '_')}_complete`] = false;
             acc[`${language.toLowerCase().replaceAll(' ', '_')}_published`] = false;
+            acc[`${language.toLowerCase().replaceAll(' ', '_')}_link`] = '';
             return acc;
         }, {}),
         file_link: ''
@@ -46,30 +47,14 @@ const AddPopup = ({ onClose, addData, selectedCategory, colsSet }) => {
                 body: JSON.stringify(formData)
             });
 
-            if (response.ok) {
-                response.json().then(data => {
-                    // Access inserted ID
-                    const insertId = data.submitedData.insertId;
-                    formData.id = insertId;
-                    addData(formData);
-                    // console.log("formData", formData)
-                    console.log("formData.id:", formData.id);
-                    console.log("insertId:", insertId);
-                }).catch(error => {
-                    console.error("Error parsing JSON:", error);
-                });
+            const data = await response.json();
+            formData.id = data.insertId;
+            addData(formData);
 
-                console.log('Form submitted successfully!');
-                
-
-                
-                toast.success('Data inserted successfully!', {
-                    position: 'top-right',
-                });
-
-            } else {
-                console.error('Failed to submit form');
-            }
+            toast.success('Data inserted successfully!', {
+                position: 'top-right',
+            });
+            
         } catch (error) {
             console.error('Error submitting form:', error);
         }

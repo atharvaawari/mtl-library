@@ -7,7 +7,9 @@ import {
   TableHead,
   TableRow,
   Button,
+  Link,
 } from "@mui/material";
+import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import "../../FormComponent.css";
 import AddPopup from "../globalComponents/AddPopup";
 import UpdateChild from "../globalComponents/UpdatePopup";
@@ -39,7 +41,7 @@ const GameDataDisplay = React.memo(({ colsSet, selectedCategory }) => {
     fetchTableData('game_video');
   }, [selectedCategory]);
 
-  
+
 
   const addData = (newData) => {
     const newEntry = { id: tableData.length + 1, ...newData };
@@ -55,7 +57,7 @@ const GameDataDisplay = React.memo(({ colsSet, selectedCategory }) => {
     setSelectedLanguage(language);
     setSelectedItem(item);
   };
-  
+
   const toggleAddPopup = () => {
     setAddPopup(!addPopup);
   };
@@ -84,11 +86,6 @@ const GameDataDisplay = React.memo(({ colsSet, selectedCategory }) => {
         body: JSON.stringify(updatedData),
       });
 
-      if (response.ok) {
-        console.log("Form submit Sucessfully...");
-      } else {
-        console.error("Failed to submit form");
-      }
     } catch (error) {
       console.error("Error submitting form:", error);
     }
@@ -163,6 +160,7 @@ const GameDataDisplay = React.memo(({ colsSet, selectedCategory }) => {
                   {colsSet.map((language, index) => {
                     const publishedKey = `${language.toLowerCase()}_published`;
                     const completeKey = `${language.toLowerCase()}_complete`;
+                    const link = `${language.toLowerCase()}_link`;
                     const isPublished = item[publishedKey] ? JSON.parse(item[publishedKey]) : false;
                     const isComplete = item[completeKey] ? JSON.parse(item[completeKey]) : false;
                     return (
@@ -173,6 +171,20 @@ const GameDataDisplay = React.memo(({ colsSet, selectedCategory }) => {
                           className={getStatusClass(isPublished, isComplete)}
                         >
                           {getStatusLabel(isPublished, isComplete)}
+
+                          {
+                            item[link]
+                              ? <Link href={item[link]} target="_blank" rel="noopener noreferrer" className="black-batch"
+                                sx={{
+                                  fontSize: '12px',
+                                  fontWeight: '900',
+                                  color: 'white',
+                                  '& .MuiSvgIcon-root': { fontSize: '12px' },
+                                }}
+                              >
+                                <OpenInNewIcon /></Link>
+                              : ''
+                          }
                         </Button>
                       </TableCell>
                     );

@@ -36,3 +36,8 @@ border-color: #b02a37;
 .headding-item{
   text-align: center !important;
 }
+
+.child-accordion{
+  background:'navajowhite';
+  padding: 0 !important;
+}

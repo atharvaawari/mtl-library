@@ -57,11 +57,9 @@ const AddChildPopup = ({ onClose, addChildData, parent_id, incChildCount }) => {
 
             if (response.ok) {
 
-                response.json().then(data => {
-                    // Access inserted ID
-                    const insertId = data.submitedData.insertId;
-                    
-                    formData.id = insertId;
+                const data = await response.json();
+                formData.id = data.insertId;
+
                     addChildData(formData);
                     setFormData({
                         title: '',
@@ -92,12 +90,7 @@ const AddChildPopup = ({ onClose, addChildData, parent_id, incChildCount }) => {
                     });
 
                     console.log("formData.id:", formData.id);
-                }).catch(error => {
-                    console.error("Error parsing JSON:", error);
-                });
-                
-                console.log('Form submitted successfully!');
-              
+
                 setFormData({
                     title: '',
                     hindi_complete: false,
@@ -132,7 +125,7 @@ const AddChildPopup = ({ onClose, addChildData, parent_id, incChildCount }) => {
                     position: 'top-right',
                 });
             } else {
-                console.error('Failed to submit form');
+                
             }
         } catch (error) {
             console.error('Error submitting form:', error);

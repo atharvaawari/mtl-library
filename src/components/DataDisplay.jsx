@@ -10,6 +10,7 @@ import {
   Button,
   Collapse,
   Box,
+  Link
 } from "@mui/material";
 import Update from "./Update";
 import Popup from "./Popup";
@@ -17,6 +18,7 @@ import ContentHub from "./ContentChildSection";
 import { toast, Toaster } from "react-hot-toast";
 import './DataDisplay.css';
 import ButtonPopup from "./globalComponents/ButtonPopup";
+import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 
 const DataDisplay = React.memo(({ colsSet, selectedCategory }) => {
 
@@ -152,10 +154,11 @@ const DataDisplay = React.memo(({ colsSet, selectedCategory }) => {
   }, {});
 
   const addData = (newData) => {
-    const newEntry = {id: tableData.length + 1, ...newData};
+    const newEntry = { id: tableData.length + 1, ...newData };
     setTableData([...tableData, newEntry]);
-    };
- 
+
+  };
+
 
   const getStatusClass = (published, complete) => {
     if (published && complete) return 'success';
@@ -216,7 +219,7 @@ const DataDisplay = React.memo(({ colsSet, selectedCategory }) => {
                     <TableRow >
 
                       <TableCell>{idx + 1}</TableCell>
-                      <TableCell>{item.title}</TableCell>
+                      <TableCell >{item.title}</TableCell>
 
                       <TableCell>
                         <Button
@@ -243,6 +246,7 @@ const DataDisplay = React.memo(({ colsSet, selectedCategory }) => {
                       {colsSet.map((language, index) => {
                         const publishedKey = `${language.toLowerCase()}_published`;
                         const completeKey = `${language.toLowerCase()}_complete`;
+                        const link = `${language.toLowerCase()}_link`
                         const isPublished = item[publishedKey] ? JSON.parse(item[publishedKey]) : false;
                         const isComplete = item[completeKey] ? JSON.parse(item[completeKey]) : false;
                         return (
@@ -253,7 +257,22 @@ const DataDisplay = React.memo(({ colsSet, selectedCategory }) => {
                               className={getStatusClass(isPublished, isComplete)}
                             >
                               {getStatusLabel(isPublished, isComplete)}
+
+                              {
+                                item[link]
+                                  ? <Link href={item[link]} target="_blank" rel="noopener noreferrer" className="black-batch"
+                                    sx={{
+                                      fontSize: '12px',
+                                      fontWeight: '900',
+                                      color: 'white',
+                                      '& .MuiSvgIcon-root': { fontSize: '12px' },
+                                    }}
+                                  >
+                                    <OpenInNewIcon /></Link>
+                                  : ''
+                              }
                             </Button>
+
                           </TableCell>
                         );
                       })}
@@ -267,13 +286,16 @@ const DataDisplay = React.memo(({ colsSet, selectedCategory }) => {
                     </TableRow>
                     <TableRow >
                       <TableCell
+                        className="child-accordion"
                         style={{ paddingBottom: 0, paddingTop: 0 }}
                         colSpan={14}>
                         <Collapse
+
+                          style={{ background: "navajowhite" }}
                           in={expandedRow === idx}
                           timeout="auto"
                           unmountOnExit>
-                          <Box margin={1}>
+                          <Box margin={3}>
                             <ContentHub nestedData={nestedData} currentItemId={currentItemId} incChildCount={incChildCount} />
                           </Box>
                         </Collapse>

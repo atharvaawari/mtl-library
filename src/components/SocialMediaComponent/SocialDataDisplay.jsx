@@ -9,8 +9,10 @@ import {
   TableRow,
   Paper,
   Button,
+  Link,
 } from "@mui/material";
-import { toast, Toaster } from "react-hot-toast";
+import OpenInNewIcon from '@mui/icons-material/OpenInNew';
+import { Toaster } from "react-hot-toast";
 import "./SocialDataDisplay.css";
 import AddPopup from "../globalComponents/AddPopup";
 import UpdateChild from "../globalComponents/UpdatePopup";
@@ -169,6 +171,7 @@ const SocialDataDisplay = React.memo(({ colsSet, selectedCategory }) => {
                   {colsSet.map((language, index) => {
                     const publishedKey = `${language.toLowerCase()}_published`;
                     const completeKey = `${language.toLowerCase()}_complete`;
+                    const link = `${language.toLowerCase()}_link`;
                     const isPublished = item[publishedKey] ? JSON.parse(item[publishedKey]) : false;
                     const isComplete = item[completeKey] ? JSON.parse(item[completeKey]) : false;
                     return (
@@ -179,6 +182,20 @@ const SocialDataDisplay = React.memo(({ colsSet, selectedCategory }) => {
                           className={getStatusClass(isPublished, isComplete)}
                         >
                           {getStatusLabel(isPublished, isComplete)}
+
+                          {
+                            item[link]
+                              ? <Link href={item[link]} target="_blank" rel="noopener noreferrer" className="black-batch"
+                                sx={{
+                                  fontSize: '12px',
+                                  fontWeight: '900',
+                                  color: 'white',
+                                  '& .MuiSvgIcon-root': { fontSize: '12px' },
+                                }}
+                              >
+                                <OpenInNewIcon /></Link>
+                              : ''
+                          }
                         </Button>
                       </TableCell>
                     );
