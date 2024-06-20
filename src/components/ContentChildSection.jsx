@@ -13,7 +13,7 @@
   import { toast } from "react-hot-toast";
   import AddChildPopup from "./AddChildPopup";
   import OpenInNewIcon from '@mui/icons-material/OpenInNew';
-
+  import config from "../config";
 
   const ContentHub = ({ nestedData, currentItemId, incChildCount }) => {
 
@@ -69,7 +69,7 @@
       );
 
       try {
-        const response = await fetch("http://localhost:3001/update-content-child", {
+        const response = await fetch(`${config.baseURL}/update-content-child`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",

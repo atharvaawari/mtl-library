@@ -17,6 +17,7 @@ import "./SocialDataDisplay.css";
 import AddPopup from "../globalComponents/AddPopup";
 import UpdateChild from "../globalComponents/UpdatePopup";
 import ButtonPopup from '../globalComponents/ButtonPopup';
+import config from "../../config";
 
 
 const SocialDataDisplay = React.memo(({ colsSet, selectedCategory }) => {
@@ -30,7 +31,7 @@ const SocialDataDisplay = React.memo(({ colsSet, selectedCategory }) => {
 
   const fetchTableData = useCallback( async (tablename) => {
     try {
-      const url = `http://localhost:3001/content-data?category=${selectedCategory}&tablename=${tablename}`;
+      const url = `${config.baseURL}/content-data?category=${selectedCategory}&tablename=${tablename}`;
 
       const response = await fetch(url);
       const data = await response.json();
@@ -82,7 +83,7 @@ const SocialDataDisplay = React.memo(({ colsSet, selectedCategory }) => {
     );
 
     try {
-      const response = await fetch("http://localhost:3001/update-content", {
+      const response = await fetch(`${config.baseURL}/update-content`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

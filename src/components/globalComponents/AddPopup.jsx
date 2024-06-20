@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 
 import IconButton from '@mui/material/IconButton';
 import { toast} from "react-hot-toast";
+import config from '../../config';
 
 import '../Popup.css';
 
@@ -39,7 +40,7 @@ const AddPopup = ({ onClose, addData, selectedCategory, colsSet }) => {
         e.preventDefault();
 
         try {
-            const response = await fetch('http://localhost:3001/submit', {
+            const response = await fetch(`${config.baseURL}/submit`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

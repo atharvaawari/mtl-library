@@ -15,6 +15,7 @@ import AddPopup from "../globalComponents/AddPopup";
 import UpdateChild from "../globalComponents/UpdatePopup";
 import ButtonPopup from '../globalComponents/ButtonPopup';
 import { Toaster } from "react-hot-toast";
+import config from "../../config";
 
 const GameDataDisplay = React.memo(({ colsSet, selectedCategory }) => {
   const [tableData, setTableData] = useState([]);
@@ -26,7 +27,7 @@ const GameDataDisplay = React.memo(({ colsSet, selectedCategory }) => {
 
   const fetchTableData = useCallback( async (tablename) => {
     try {
-      const url = `http://localhost:3001/content-data?category=${selectedCategory}&tablename=${tablename}`;
+      const url = `${config.baseURL}/content-data?category=${selectedCategory}&tablename=${tablename}`;
 
       const response = await fetch(url);
       const data = await response.json();
@@ -80,7 +81,7 @@ const GameDataDisplay = React.memo(({ colsSet, selectedCategory }) => {
     // chaged
     // const response = await fetch("http://localhost:3001/update-content"
     try {
-      await fetch("http://localhost:3001/update-content", {
+      await fetch(`${config.baseURL}/update-content`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

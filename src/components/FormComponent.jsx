@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import "../FormComponent.css";
 import DataDisplay from "./DataDisplay";
 import GameDataDisplay from "./gameComponents/GameDataDisplay";
 import SocialDataDisplay from "./SocialMediaComponent/SocialDataDisplay";
 import Loader from "./Loader/Loader";
 import Navbar from "./Navbar";
+
 import {
   MenuItem,
   Select,
@@ -16,21 +17,7 @@ const FormComponent = () => {
   const [data, setData] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState("");
   const [colsSet, setColsSet] = useState([]);
-  const [loading, setLoading] = useState(true);
-
-
-
-  useEffect(() => {
-    // Simulate an API call
-    setTimeout(() => {
-      setLoading(false);
-    }, 1000); // 3 seconds delay
-  }, []);
-
-  if (loading) {
-    return <Loader />;
-  }
-
+  
 
   const changePopupData = (category) => {
     fetch('http://localhost:3000/data/channel.json')
@@ -38,10 +25,6 @@ const FormComponent = () => {
       .then((data) => {
         setColsSet(data[category][0].languages)
       });
-
-    if (!data) {
-      return <div>..Loading</div>;
-    }
   }
 
   const handleCategoryChange = (e) => {
@@ -52,6 +35,9 @@ const FormComponent = () => {
     }
   };
 
+  if (!data) {
+    return <Loader />;;
+  }
 
   return (
     <>

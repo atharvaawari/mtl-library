@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { toast } from 'react-hot-toast';
 import IconButton from '@mui/material/IconButton';
-
+import config from '../config';
 
 import './Popup.css';
 
@@ -47,7 +47,7 @@ const AddChildPopup = ({ onClose, addChildData, parent_id, incChildCount }) => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await fetch('http://localhost:3001/submit-child', {
+            const response = await fetch(`${config.baseURL}/submit-child`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

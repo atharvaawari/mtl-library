@@ -19,6 +19,8 @@ import { Toaster } from "react-hot-toast";
 import './DataDisplay.css';
 import ButtonPopup from "./globalComponents/ButtonPopup";
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
+import Loader from "./Loader/Loader";
+import config from "../config";
 
 const DataDisplay = React.memo(({ colsSet, selectedCategory }) => {
 
@@ -30,8 +32,7 @@ const DataDisplay = React.memo(({ colsSet, selectedCategory }) => {
   const [addPopUp, setAddPopUp] = useState(false);
   const [showButtonPopup, setShowButtonPopup] = useState(false);
   const [selectLanguage, setSelectedLanguage] = useState(null);
-
-
+  const [isLoading, setIsLoading] = useState(true);
 
   const incChildCount = async (id) => {
     const updatedArray = tableData.map((item) =>
@@ -40,9 +41,10 @@ const DataDisplay = React.memo(({ colsSet, selectedCategory }) => {
     setTableData(updatedArray);
   };
 
-  const fetchTableData = useCallback( async (tablename) => {
+  const fetchTableData = useCallback(async (tablename) => {
+    setIsLoading(true);
     try {
-      const url = `http://localhost:3001/content-data?category=${selectedCategory}&tablename=${tablename}`;
+      const url = `${config.baseURL}/content-data?category=${selectedCategory}&tablename=${tablename}`;
 
       const response = await fetch(url);
       const data = await response.json();
@@ -50,8 +52,15 @@ const DataDisplay = React.memo(({ colsSet, selectedCategory }) => {
       setTableData(data);
     } catch (error) {
       console.error('Error fetching data:', error);
+    } finally {
+      if (colsSet) {
+        setIsLoading(false);
+      }
+
     }
+
   }, [selectedCategory]);
+
 
   useEffect(() => {
     fetchTableData('content_house');
@@ -94,7 +103,7 @@ const DataDisplay = React.memo(({ colsSet, selectedCategory }) => {
       // if (!nestedData[itemId]) {
       try {
         const response = await fetch(
-          `http://localhost:3001/get-content-child-data?id=${itemId}`
+          `${config.baseURL}/get-content-child-data?id=${itemId}`
         );
         if (response.ok) {
           data = await response.json();
@@ -119,7 +128,7 @@ const DataDisplay = React.memo(({ colsSet, selectedCategory }) => {
       item.id === updatedData.id ? updatedData : item
     );
     try {
-      const response = await fetch("http://localhost:3001/update-content", {
+      const response = await fetch(`${config.baseURL}/update-content`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -171,6 +180,10 @@ const DataDisplay = React.memo(({ colsSet, selectedCategory }) => {
     if (complete) return 'C';
     return '-';
   };
+
+  if (isLoading) {
+    return <Loader />;
+  }
 
   return (
     <>
