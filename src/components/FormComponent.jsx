@@ -5,7 +5,7 @@ import GameDataDisplay from "./gameComponents/GameDataDisplay";
 import SocialDataDisplay from "./SocialMediaComponent/SocialDataDisplay";
 import Loader from "./Loader/Loader";
 import Navbar from "./Navbar";
-
+import config from "../config";
 import {
   MenuItem,
   Select,
@@ -20,7 +20,7 @@ const FormComponent = () => {
   
 
   const changePopupData = (category) => {
-    fetch('http://localhost:3000/data/channel.json')
+    fetch(`${config.channelBaseUrl}/data/channel.json`)
       .then((response) => response.json())
       .then((data) => {
         setColsSet(data[category][0].languages)
