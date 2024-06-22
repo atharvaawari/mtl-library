@@ -53,13 +53,12 @@ const DataDisplay = React.memo(({ colsSet, selectedCategory }) => {
     } catch (error) {
       console.error('Error fetching data:', error);
     } finally {
+
       if (colsSet) {
         setIsLoading(false);
       }
-
     }
-
-  }, [selectedCategory]);
+  }, [selectedCategory, colsSet]);
 
 
   useEffect(() => {
@@ -231,7 +230,7 @@ const DataDisplay = React.memo(({ colsSet, selectedCategory }) => {
                   <React.Fragment key={idx}>
                     <TableRow >
 
-                      <TableCell>{idx + 1}</TableCell>
+                      <TableCell >{idx + 1}</TableCell>
                       <TableCell >{item.title}</TableCell>
 
                       <TableCell>

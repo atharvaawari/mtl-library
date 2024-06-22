@@ -17,6 +17,7 @@ import "./SocialDataDisplay.css";
 import AddPopup from "../globalComponents/AddPopup";
 import UpdateChild from "../globalComponents/UpdatePopup";
 import ButtonPopup from '../globalComponents/ButtonPopup';
+import Loader from '../Loader/Loader';
 import config from "../../config";
 
 
@@ -28,8 +29,10 @@ const SocialDataDisplay = React.memo(({ colsSet, selectedCategory }) => {
   const [selectedItem, setSelectedItem] = useState(null);
   const [showButtonPopup, setShowButtonPopup] = useState(false);
   const [selectLanguage, setSelectedLanguage] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   const fetchTableData = useCallback( async (tablename) => {
+    setIsLoading(true);
     try {
       const url = `${config.baseURL}/content-data?category=${selectedCategory}&tablename=${tablename}`;
 
@@ -39,8 +42,13 @@ const SocialDataDisplay = React.memo(({ colsSet, selectedCategory }) => {
       setTableData(data);
     } catch (error) {
       console.error('Error fetching data:', error);
+    } finally {
+
+      if (colsSet) {
+        setIsLoading(false);
+      }
     }
-  }, [selectedCategory]);
+  }, [selectedCategory, colsSet]);
 
 
   useEffect(() => {
@@ -118,6 +126,10 @@ const SocialDataDisplay = React.memo(({ colsSet, selectedCategory }) => {
     if (complete) return 'C';
     return '-';
   };
+
+  if (isLoading) {
+    return <Loader />;
+  }
 
 
   return (

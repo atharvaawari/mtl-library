@@ -15,6 +15,7 @@ import AddPopup from "../globalComponents/AddPopup";
 import UpdateChild from "../globalComponents/UpdatePopup";
 import ButtonPopup from '../globalComponents/ButtonPopup';
 import { Toaster } from "react-hot-toast";
+import Loader from "../Loader/Loader";
 import config from "../../config";
 
 const GameDataDisplay = React.memo(({ colsSet, selectedCategory }) => {
@@ -24,8 +25,10 @@ const GameDataDisplay = React.memo(({ colsSet, selectedCategory }) => {
   const [selectedItem, setSelectedItem] = useState(null);
   const [showButtonPopup, setShowButtonPopup] = useState(false);
   const [selectLanguage, setSelectedLanguage] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   const fetchTableData = useCallback( async (tablename) => {
+    setIsLoading(true);
     try {
       const url = `${config.baseURL}/content-data?category=${selectedCategory}&tablename=${tablename}`;
 
@@ -35,8 +38,13 @@ const GameDataDisplay = React.memo(({ colsSet, selectedCategory }) => {
       setTableData(data);
     } catch (error) {
       console.error('Error fetching data:', error);
+    } finally {
+
+      if (colsSet) {
+        setIsLoading(false);
+      }
     }
-  }, [selectedCategory]);
+  }, [selectedCategory, colsSet]);
 
     useEffect(() => {
       fetchTableData('game_video');
@@ -112,6 +120,10 @@ const GameDataDisplay = React.memo(({ colsSet, selectedCategory }) => {
     return '-';
   };
 
+  if (isLoading) {
+    return <Loader />;
+  }
+
   return (
     <>
       <div>
@@ -135,15 +147,15 @@ const GameDataDisplay = React.memo(({ colsSet, selectedCategory }) => {
         <TableContainer>
           <Table>
             <TableHead>
-              <TableRow>
-                <TableCell>ID</TableCell>
-                <TableCell>Title</TableCell>
-                <TableCell>Action</TableCell>
+              <TableRow className="headding-item">
+                <TableCell className="headding-item">ID</TableCell>
+                <TableCell className="headding-item">Title</TableCell>
+                <TableCell className="headding-item">Action</TableCell>
                 {colsSet.map((language, index) => (
-                  <TableCell key={index}>{language.replace(/_/g, ' ')}</TableCell>
+                  <TableCell className="headding-item" key={index}>{language.replace(/_/g, ' ')}</TableCell>
                 ))}
-                <TableCell>File Link</TableCell>
-                <TableCell></TableCell>
+                <TableCell className="headding-item">File Link</TableCell>
+                <TableCell className="headding-item"></TableCell>
               </TableRow>
             </TableHead>
             <TableBody>

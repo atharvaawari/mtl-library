@@ -143,3 +143,6 @@ background-color: rgba(0, 0, 0, 0.29);
   border-radius: 7px;
 }
 
+.headding-item{
+  text-align: center !important;
+}
