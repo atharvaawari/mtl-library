@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { toast } from 'react-hot-toast';
 import IconButton from '@mui/material/IconButton';
 import './Popup.css';
-import config from '../config'
+import config from '../config.js'
 
 const Popup = ({ onClose, addData, selectedCategory }) => {
     const [formData, setFormData] = useState({
@@ -59,7 +59,7 @@ const Popup = ({ onClose, addData, selectedCategory }) => {
         e.preventDefault();
 
         try {
-            const response = await fetch(`${config.baseURL}1/submit`, {
+            const response = await fetch(`${config.baseURL}/submit`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
